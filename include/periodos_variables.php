@@ -1,0 +1,20 @@
+<?php
+$strTableName="periodos";
+$_SESSION["OwnerID"] = $_SESSION["_".$strTableName."_OwnerID"];
+
+$strOriginalTableName="periodos";
+
+$gstrOrderBy="";
+if(strlen($gstrOrderBy) && strtolower(substr($gstrOrderBy,0,8))!="order by")
+	$gstrOrderBy="order by ".$gstrOrderBy;
+
+// alias for 'SQLQuery' object
+$gSettings = new ProjectSettings("periodos");
+$gQuery = $gSettings->getSQLQuery();
+$eventObj = &$tableEvents["periodos"];
+
+$reportCaseSensitiveGroupFields = false;
+
+$gstrSQL = $gQuery->gSQLWhere("");
+
+?>

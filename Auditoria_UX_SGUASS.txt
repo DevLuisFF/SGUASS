@@ -1,0 +1,2541 @@
+﻿================================================================================
+AUDITORÍA UX/UI - SGUASS (PHPRunner 10.0)
+Informe de análisis de elementos y hallazgos
+================================================================================
+
+Proyecto        : SGUASS
+Versión         : PHPRunner 10.0 build 32290
+Fecha           : 22/10/2026
+Modo            : Auditoría estática (análisis de solo lectura)
+Archivo fuente  : C:\Users\Luis-NT\Documents\SGUASS\SGUASS.phpr
+Salida revisada : C:\Users\Luis-NT\Documents\SGUASS\output
+Puntuación      : 45/100
+
+--------------------------------------------------------------------------------
+COMO LEER ESTE INFORME
+--------------------------------------------------------------------------------
+
+Este archivo está pensado para revisar la auditoría sin depender de Markdown.
+Cada hallazgo tiene:
+
+  ID          Código único (UX-01, UX-02, ...).
+  Severidad   CRÍTICA, ALTA o MEDIA.
+  Pantalla    Página o módulo afectado.
+  Evidencia   Archivo y línea exactos del proyecto o del código generado.
+  Ley         Principio UX o criterio WCAG incumplido.
+  Impacto     Consecuencia funcional y psicológica para el usuario.
+  Corrección  Sección de este informe donde está la solución.
+
+Las rutas de archivo son evidencia. Las correcciones se aplican desde la UI de
+PHPRunner, no editando los .php generados a mano.
+
+--------------------------------------------------------------------------------
+ÍNDICE
+--------------------------------------------------------------------------------
+
+  1. RESUMEN EJECUTIVO
+     1.1 Veredicto
+     1.2 Puntuación por dimensión
+     1.3 Lo que funciona
+     1.4 Top 5 riesgos
+     1.5 Ética y dark patterns
+
+  2. ALCANCE Y MÉTODO
+     2.1 Alcance
+     2.2 Fuentes revisadas
+     2.3 Limitaciones
+     2.4 Convenciones de severidad
+
+  3. INVENTARIO DE ELEMENTOS POR PANTALLA
+     3.1 Listado
+     3.2 Búsqueda simple
+     3.3 Alta
+     3.4 Edición
+     3.5 Vista
+     3.6 Login
+     3.7 Menú y Dashboard
+     3.8 Master-Details
+     3.9 Elementos globales
+
+  4. MATRIZ DE HALLAZGOS
+     4.1 Índice de hallazgos
+     4.2 Hallazgos críticos y altos en detalle
+     4.3 Hallazgos medios en detalle
+     4.4 Cobertura de leyes y principios
+
+  5. CONTRASTE Y ACCESIBILIDAD
+     5.1 Ratios calculados
+     5.2 Objetivos táctiles
+     5.3 Nombres accesibles
+     5.4 Foco y teclado
+
+  6. GUÍA DE IMPLEMENTACIÓN EN PHPRUNNER 10.0
+     6.0 Orden de trabajo
+     6.1 CSS global
+     6.2 JavaScript global
+     6.3 Login
+     6.4 List y Search
+     6.5 Add, Edit y View
+     6.6 Dashboard, menú y gráficos
+     6.7 Master-Details
+     6.8 Loading
+     6.9 Modal de calificaciones
+     6.10 Checklist de verificación
+
+  7. ANEXOS
+     A. Glosario de términos
+     B. Mapeo de enlaces del dashboard
+     C. Campos, ayudas y validaciones
+     D. Índice de evidencia por archivo
+
+
+================================================================================
+1. RESUMEN EJECUTIVO
+================================================================================
+
+1.1 VEREDICTO
+--------------------------------------------------------------------------------
+
+SGUASS tiene una base funcional y una intención de producto clara: dashboard por
+roles, KPIs, gráficos, cálculos automáticos y acciones rápidas. Sin embargo, la
+experiencia actual está por debajo de un estándar profesional.
+
+El problema más grave no es estético: varias acciones principales del dashboard
+llevan a páginas que no existen. Eso rompe la confianza y bloquea tareas
+completas de administración, secretaria, docencia y estudiantes.
+
+Un usuario experimentado puede operar el sistema si ya conoce los módulos. Un
+usuario nuevo, un usuario móvil o una persona con baja visión encuentra barreras
+severas: enlaces muertos, contraste insuficiente, controles de 14 px, formularios
+sin guía, mensajes con alert() nativo y un modal de calificaciones que no se
+adapta a pantallas pequeñas.
+
+La buena noticia es que la mayoría de los problemas se corrige con cambios
+acotados y nativos de PHPRunner: enlaces correctos, CSS global, un JavaScript de
+endurecimiento, propiedades de campo y unos pocos snippets.
+
+1.2 PUNTUACIÓN POR DIMENSIÓN
+--------------------------------------------------------------------------------
+
+  Dimensión                                  Puntuación   Lectura
+  -----------------------------------------  ----------   ---------------------
+  Navegación y arquitectura de información      40/100    Enlaces muertos
+  Consistencia y lenguaje                       50/100    Terminología variable
+  Accesibilidad                                 35/100    Contraste y nombres
+  Formularios y prevención de errores           45/100    Sin obligatorios/ayuda
+  Feedback y rendimiento percibido              50/100    alert() y CDN
+  Móvil y táctil                                35/100    Targets y tablas
+  Estética y confianza                          60/100    Base Flatly coherente
+  -----------------------------------------  ----------   ---------------------
+  GLOBAL                                        45/100
+
+1.3 LO QUE FUNCIONA
+--------------------------------------------------------------------------------
+
+  - La estructura List -> Add -> Edit -> View -> Search es reconocible y
+    consistente con PHPRunner.
+
+  - El dashboard tiene una intención correcta: segmentar por rol, mostrar KPIs
+    y ofrecer accesos directos.
+
+  - Los listados incluyen títulos en los iconos (title="Editar", title="Ver"),
+    lo que ya es un punto de partida de accesibilidad.
+
+  - El login tiene un bloque de mensaje con role="alert", útil para errores de
+    autenticación.
+
+  - Los cálculos automáticos de mora, promedio y condición son valiosos si se
+    les agrega transparencia y control.
+
+1.4 TOP 5 RIESGOS
+--------------------------------------------------------------------------------
+
+  1. Enlaces muertos en el dashboard (CRÍTICA).
+     404 en acciones de administración, secretaria, docencia y estudiantes.
+
+  2. Contraste insuficiente del tema Flatly (ALTA).
+     Enlaces, badges y textos muted por debajo de WCAG AA.
+
+  3. Objetivos tactiles de 14 px y busqueda sin nombre accesible (ALTA).
+     Errores de toque y barreras para lectores de pantalla.
+
+  4. Formularios sin obligatorios, ayuda ni mascara de cédula (ALTA).
+     Datos inválidos, duplicados y retrabajo.
+
+  5. alert() nativo, loading falso y gráficos dependientes de CDN (ALTA).
+     Interrupciones, falsa sensación de carga y dashboard vacío si falla la red.
+
+1.5 ÉTICA Y DARK PATTERNS
+--------------------------------------------------------------------------------
+
+No se encontraron patrones oscuros deliberados como urgencia falsa, culpa,
+suscripciones ocultas o confirmaciones enganosas. El riesgo etico está en dos
+puntos:
+
+  - Mora automatica silenciosa: el sistema modifica el monto y el estado sin
+    explicar por que (pageevents_pagos.js). Aunque sea correcto, debe ser
+    transparente y editable.
+
+  - Accion destructiva poco senalizada: "Borrar articulos seleccionados" usa
+    estilo neutro (btn-default) y una terminología equivocada, lo que reduce la
+    percepcion de riesgo.
+
+Recomendación etica: toda automatizacion que cambie dinero o estado academico
+debe mostrar que hizo, por que lo hizo y como revertirlo.
+
+
+================================================================================
+2. ALCANCE Y MÉTODO
+================================================================================
+
+2.1 ALCANCE
+--------------------------------------------------------------------------------
+
+Se auditaron estas pantallas y flujos:
+
+  - Listados: estudiantes_list, pagos_list, notas_list, carreras_list,
+    matriculas_semestre_list, asistencias_list.
+  - Alta: estudiantes_add y formularios equivalentes.
+  - Edicion: estudiantes_edit y formularios equivalentes.
+  - Vista: estudiantes_view y vistas equivalentes.
+  - Busqueda simple y busqueda avanzada.
+  - Login global.
+  - Menu superior y dashboard por roles.
+  - Master-Details: carreras_masterlist y equivalentes.
+  - Elementos globales: loading, modales, notificaciones, tablas.
+
+2.2 FUENTES REVISADAS
+--------------------------------------------------------------------------------
+
+  - SGUASS.phpr (XML del proyecto, 2.1 MB, PHPRunner 10.0 build 32290).
+  - output/templates/*.htm.
+  - output/include/pages/*.php.
+  - output/include/runnerJS/events/*.js.
+  - output/styles/pages/*.css.
+  - output/styles/bootstrap/flatly/css/bootstrap-theme.min.css.
+  - output/classes/layout.php y output/classes/pdlayout.php.
+
+2.3 LIMITACIONES
+--------------------------------------------------------------------------------
+
+  - La auditoría es estática: no se ejecuto la aplicacion en un navegador real.
+  - Los ratios de contraste se calcularon con la formula WCAG 2.1.
+  - No se hicieron pruebas con lector de pantalla ni con dispositivos fisicos.
+  - No se imputan problemás de styles/general.css porque ese archivo no se carga
+    en el layout Bootstrap de las páginas auditadas.
+  - Las rutas y lineas corresponden al estado del proyecto en la fecha indicada.
+
+2.4 CONVENCIONES DE SEVERIDAD
+--------------------------------------------------------------------------------
+
+  CRÍTICA  Bloquea una tarea principal o produce un fallo de confianza grave.
+  ALTA     Impide o dificulta seriamente una tarea; viola WCAG AA.
+  MEDIA    Genera friccion, inconsistencia o riesgo de error, pero hay workaround.
+  BAJA     Mejora deseable; no incluida en esta matriz.
+
+
+================================================================================
+3. INVENTARIO DE ELEMENTOS POR PANTALLA
+================================================================================
+
+3.1 LISTADO
+--------------------------------------------------------------------------------
+
+  Elemento        : Acciones de fila (Editar, Ver, Cancelar)
+  Ubicacion       : templates/estudiantes_list.htm:760-784
+  Estado actual   : <a class="btn-link glyphicon glyphicon-pencil"> y
+                    <a class="btn-link glyphicon glyphicon-search">.
+  Problema        : Iconos de ~14 px en columnas de 30 px, sin padding ni
+                    separacion. UX-03.
+  Severidad       : ALTA
+  Recomendación   : Target 44x44, celda de 104 px, separacion de 8 px.
+
+  Elemento        : Botón "Borrar articulos seleccionados"
+  Ubicacion       : templates/estudiantes_list.htm:114 y 401
+  Estado actual   : Texto equivocado, sin tilde, estilo btn-default.
+  Problema        : Terminología y jerarquia de accion destructiva. UX-12/UX-17.
+  Severidad       : MEDIA
+  Recomendación   : "Eliminar seleccionados", btn-danger, confirmacion clara.
+
+  Elemento        : Botón "Añadir nuevo"
+  Ubicacion       : templates/estudiantes_list.htm:391-393
+  Estado actual   : btn-primary con texto generico.
+  Problema        : No describe el objeto que se crea. UX-12.
+  Severidad       : MEDIA
+  Recomendación   : "Nuevo estudiante".
+
+  Elemento        : Columnas con white-space: nowrap
+  Ubicacion       : styles/pages/estudiantes_list.css:2-27;
+                    styles/pages/pagos_list.css:2-48
+  Estado actual   : Muchas columnas no permiten salto de linea.
+  Problema        : Scroll horizontal sin affordance en móvil. UX-18.
+  Severidad       : MEDIA
+  Recomendación   : Envolver en .table-responsive y limitar nowrap a acciones.
+
+3.2 BÚSQUEDA SIMPLE
+--------------------------------------------------------------------------------
+
+  Elemento        : Input de busqueda
+  Ubicacion       : templates/estudiantes_list.htm:165-167
+  Estado actual   : <input type="search" class="form-control" size="25">
+                    sin label, placeholder ni aria-label.
+  Problema        : No se anuncia el proposito del campo. UX-04.
+  Severidad       : ALTA
+  Recomendación   : Placeholder "Buscar por cédula, nombre o matricula" y
+                    aria-label "Buscar estudiantes".
+
+  Elemento        : Botón de buscar
+  Ubicacion       : templates/estudiantes_list.htm:175-177
+  Estado actual   : <button class="btn btn-primary"><span class="glyphicon
+                    glyphicon-search"></span></button>, sin texto ni title.
+  Problema        : Nombre accesible ausente. UX-04.
+  Severidad       : ALTA
+  Recomendación   : aria-label="Buscar" y title="Buscar".
+
+  Elemento        : Busqueda avanzada
+  Ubicacion       : templates/estudiantes_search.htm
+  Estado actual   : Labels asociados con for y botones "Buscar"/"Limpiar".
+  Problema        : Sin hallazgo crítico; mantener consistencia visual.
+  Severidad       : -
+  Recomendación   : Reutilizar el mismo ancho y estilo de campos.
+
+3.3 ALTA
+--------------------------------------------------------------------------------
+
+  Elemento        : Campos del formulario
+  Ubicacion       : templates/estudiantes_add.htm:127-219
+  Estado actual   : Labels visibles, tooltips .r-edit-tooltip vacios, sin
+                    placeholders ni marcas de obligatorio.
+  Problema        : El usuario no sabe que es obligatorio ni que formato usar.
+                    UX-06.
+  Severidad       : ALTA
+  Recomendación   : Required, help text <=80 caracteres, placeholder y
+                    validacion por campo.
+
+  Elemento        : Campo numero_cedula
+  Ubicacion       : SGUASS.phpr:11626 (m_bRequired=0)
+  Estado actual   : Texto libre, max 20, sin mascara ni validacion.
+  Problema        : Acepta cedulas inválidas y duplicados. UX-06.
+  Severidad       : ALTA
+  Recomendación   : Required, maxlength 10, inputmode numeric, regex
+                    ^\d{6,8}(-\d)?$.
+
+  Elemento        : Acciones superiores "Volver / Ver / Editar"
+  Ubicacion       : templates/estudiantes_add.htm:67-73
+  Estado actual   : Aparecen antes de guardar el registro.
+  Problema        : Invitan a abandonar el formulario. UX-17.
+  Severidad       : MEDIA
+  Recomendación   : Ocultar Ver/Editar en Alta; mover Volver a breadcrumb.
+
+  Elemento        : Acciones inferiores "Guardar / Volver / Cancelar"
+  Ubicacion       : templates/estudiantes_add.htm:248-265
+  Estado actual   : Tres acciones, dos de salida.
+  Problema        : No hay una accion primaria única. UX-17.
+  Severidad       : MEDIA
+  Recomendación   : Guardar (primario) + Cancelar (default).
+
+3.4 EDICIÓN
+--------------------------------------------------------------------------------
+
+  Elemento        : Formulario de edicion
+  Ubicacion       : templates/estudiantes_edit.htm (equivalente a Add)
+  Estado actual   : Reutiliza la misma estructura y tooltips vacios.
+  Problema        : Repite los problemás de ayuda y validacion. UX-06.
+  Severidad       : ALTA
+  Recomendación   : Aplicar las mismas propiedades y validaciones que en Alta.
+
+  Elemento        : Formato de montos en carreras
+  Ubicacion       : include/runnerJS/events/pageevents_carreras.js:2-6
+  Estado actual   : Formatea en input/keyup con ctrl.setValue(); elimina
+                    IsNumeric.
+  Problema        : El cursor salta y se borran caracteres sin aviso. UX-14.
+  Severidad       : MEDIA
+  Recomendación   : Formatear en blur; validar antes de guardar.
+
+  Elemento        : Calculo de mora en pagos
+  Ubicacion       : include/runnerJS/events/pageevents_pagos.js:2-4
+  Estado actual   : Calcula 2% por cada 30 días y cambia estado a Vencido.
+  Problema        : Automatizacion silenciosa de dinero. UX-15.
+  Severidad       : MEDIA
+  Recomendación   : Aviso, ayuda en el campo y edicion manual posible.
+
+  Elemento        : Calculo de promedio y condición en notas
+  Ubicacion       : include/runnerJS/events/pageevents_notas.js:2-3
+  Estado actual   : prom >= 60 -> Aprobado; si no -> Reprobado.
+  Problema        : No coincide con el dashboard (<30 Inhabilitado;
+                    A Examen Extraordinario). UX-16.
+  Severidad       : MEDIA
+  Recomendación   : Una sola funcion de condición compartida.
+
+3.5 VISTA
+--------------------------------------------------------------------------------
+
+  Elemento        : Botón "Volver a la lista"
+  Ubicacion       : templates/estudiantes_view.htm:204-206
+  Estado actual   : btn-default con texto claro.
+  Problema        : Sin hallazgo grave; mantener.
+  Severidad       : -
+  Recomendación   : Asegurar 44 px de alto en móvil.
+
+  Elemento        : Botón "Cerrar ventana"
+  Ubicacion       : templates/estudiantes_view.htm:212-214
+  Estado actual   : btn-default.
+  Problema        : Puede no funcionar si la vista se abrio en la misma pestana.
+  Severidad       : MEDIA
+  Recomendación   : Cambiar a "Volver" si no hay ventana emergente.
+
+  Elemento        : Menu hamburguesa
+  Ubicacion       : templates/estudiantes_view.htm:225-227
+  Estado actual   : Button con solo glyphicon-menu-hamburger.
+  Problema        : Sin aria-label. UX-04.
+  Severidad       : ALTA
+  Recomendación   : aria-label="Mas acciones" y title.
+
+3.6 LOGIN
+--------------------------------------------------------------------------------
+
+  Elemento        : Label de usuario
+  Ubicacion       : templates/.global_login.htm:81-82
+  Estado actual   : "Email:" para el campo username.
+  Problema        : La etiqueta no coincide con lo que acepta el sistema. UX-05.
+  Severidad       : ALTA
+  Recomendación   : "Usuario o correo electronico".
+
+  Elemento        : Campo de usuario
+  Ubicacion       : templates/.global_login.htm:94
+  Estado actual   : input text sin autofocus, autocomplete ni required.
+  Problema        : Gestores de contraseña y lectores de pantalla pierden
+                    contexto. UX-05.
+  Severidad       : ALTA
+  Recomendación   : autocomplete="username", foco inicial, aria-required.
+
+  Elemento        : Campo de contraseña
+  Ubicacion       : templates/.global_login.htm:109-122
+  Estado actual   : input password sin autocomplete ni botón de mostrar.
+  Problema        : Errores de tipeo y falta de accesibilidad. UX-05.
+  Severidad       : ALTA
+  Recomendación   : autocomplete="current-password" y botón Mostrar/Ocultar.
+
+  Elemento        : Botones "Aceptar" y "Continuar"
+  Ubicacion       : templates/.global_login.htm:177-186
+  Estado actual   : Ambos btn-primary, sin diferencia clara.
+  Problema        : Dos acciones primarias compiten. UX-05.
+  Severidad       : ALTA
+  Recomendación   : Un solo primario "Ingresar"; ocultar "Continuar" si no
+                    tiene un proposito distinto.
+
+3.7 MENÚ Y DASHBOARD
+--------------------------------------------------------------------------------
+
+  Elemento        : Acciones rápidas por rol
+  Ubicacion       : SGUASS.phpr:41117-41126, 41302-41307, 41499-41504,
+                    41692-41697
+  Estado actual   : 8 acciones para Admin; 6 para Secretaria, Docente y
+                    Estudiante, todas del mismo peso.
+  Problema        : Sobrecarga de decision y tarea clave enterrada. UX-08.
+  Severidad       : ALTA
+  Recomendación   : 3 acciones primarias + "Mas módulos" colapsable.
+
+  Elemento        : Enlaces a módulos
+  Ubicacion       : SGUASS.phpr:41121-41125 y equivalentes
+  Estado actual   : catedras_list.php, cuotas_list.php, auditoria_list.php,
+                    calificaciones_list.php, constancias_list.php,
+                    entregas_tareas_list.php.
+  Problema        : Archivos inexistentes en output. UX-01.
+  Severidad       : CRÍTICA
+  Recomendación   : Mapear a cursos_list.php, pagos_list.php, notas_list.php,
+                    tarea_entregas_list.php; crear o eliminar el resto.
+
+  Elemento        : KPIs
+  Ubicacion       : SGUASS.phpr:41091-41112
+  Estado actual   : Tarjetas div sin enlace.
+  Problema        : El dato no es accionable. UX-20.
+  Severidad       : MEDIA
+  Recomendación   : Convertir cada tarjeta en enlace a la lista filtrada.
+
+  Elemento        : Gráficos ECharts
+  Ubicacion       : SGUASS.phpr:40841, 41132-41144, 41158-41160
+  Estado actual   : CDN sin SRI ni fallback; divs sin aria-label.
+  Problema        : Dashboard vacío si falla la red; datos solo por color.
+                    UX-09/UX-19.
+  Severidad       : ALTA
+  Recomendación   : Bundle local, fallback visible, aria y decal.
+
+  Elemento        : Tipografia del dashboard
+  Ubicacion       : SGUASS.phpr:40908-40923, 40971
+  Estado actual   : Labels 0.74rem (#95a5a6), sub 0.78rem (#7b8a8b),
+                    botones 0.86rem.
+  Problema        : Texto demasiado pequeno y gris. UX-10.
+  Severidad       : ALTA
+  Recomendación   : 0.875rem y colores #4a5a5b / #5d6d6e.
+
+  Elemento        : "Area Admin"
+  Ubicacion       : templates/.global_menu.htm:72-74
+  Estado actual   : Enlaza a admin_rights_list.php.
+  Problema        : La etiqueta sugiere inicio de administración, pero abre
+                    permisos. UX-21.
+  Severidad       : MEDIA
+  Recomendación   : Enlazar a admin_members_list.php o renombrar "Permisos".
+
+3.8 MASTER-DETAILS
+--------------------------------------------------------------------------------
+
+  Elemento        : Enlace "Regresar a la tabla principal"
+  Ubicacion       : templates/carreras_masterlist.htm:14-16
+  Estado actual   : btn-link btn-xs.
+  Problema        : Target pequeno y poca jerarquia. UX-22.
+  Severidad       : MEDIA
+  Recomendación   : Botón de 44 px o breadcrumb.
+
+  Elemento        : Encabezado del masterlist
+  Ubicacion       : templates/carreras_masterlist.htm:19
+  Estado actual   : "carreras masterlist" generico.
+  Problema        : No muestra el nombre del maestro seleccionado. UX-22.
+  Severidad       : MEDIA
+  Recomendación   : "Materias de [Nombre de la carrera]".
+
+3.9 ELEMENTOS GLOBALES
+--------------------------------------------------------------------------------
+
+  Elemento        : Loading overlay
+  Ubicacion       : templates/loadindicator.htm:48 y 67
+  Estado actual   : "Loading ....." y ocultamiento fijo a los 1500 ms.
+  Problema        : Texto en ingles y falsa sensación de carga. UX-13.
+  Severidad       : MEDIA
+  Recomendación   : "Cargando..." y ocultar en window.load.
+
+  Elemento        : alert() nativo
+  Ubicacion       : SGUASS.phpr:42132, 42142, 42185, 42204, 42417, 42831,
+                    43225, 43498, 43559, 43770, 44016, 44262, etc.
+  Estado actual   : Mas de 30 llamadas.
+  Problema        : Bloquea la UI y pierde contexto. UX-07.
+  Severidad       : ALTA
+  Recomendación   : SGUASS.notify() y puente solo en dashboard.
+
+  Elemento        : Modal de calificaciones masivas
+  Ubicacion       : SGUASS.phpr:42257-42295; inputs 42234-42244
+  Estado actual   : 12 columnas, inputs 50-60 px, modal 96%, sin
+                    table-responsive ni aria-modal.
+  Problema        : No se usa en móvil; lector de pantalla sin contexto.
+                    UX-11.
+  Severidad       : ALTA
+  Recomendación   : table-responsive, aria-modal, aria-labelledby, foco y
+                    cierre de 44 px.
+
+  Elemento        : Iconos decorativos
+  Ubicacion       : Multiples templates
+  Estado actual   : glyphicon y fa sin aria-hidden.
+  Problema        : Ruido para lectores de pantalla. UX-04.
+  Severidad       : MEDIA
+  Recomendación   : aria-hidden="true" y nombre en el botón contenedor.
+
+
+================================================================================
+4. MATRIZ DE HALLAZGOS
+================================================================================
+
+4.1 ÍNDICE DE HALLAZGOS
+--------------------------------------------------------------------------------
+
+  ID      SEV      PANTALLA / ARCHIVO              LEY / PRINCIPIO     IMPACTO
+  ------  -------  -------------------------------  ------------------  ---------
+  UX-01   CRÍTICA  Dashboard (todos los roles)      Jakob / navegación  404 y pérdida
+  UX-02   ALTA     Global, tema Flatly              WCAG 1.4.3          Texto ilegible
+  UX-03   ALTA     Listados, acciones de fila        Fitts / WCAG 2.5.8  Toques erroneos
+  UX-04   ALTA     Busqueda simple y View            WCAG 1.3.1/4.1.2    Sin nombre
+  UX-05   ALTA     Login                             Hick / Jakob        Login confuso
+  UX-06   ALTA     Alta/Edicion estudiantes          Postel / Tesler     Datos inválidos
+  UX-07   ALTA     Dashboard                         Nielsen / 4.1.3     Interrupcion
+  UX-08   ALTA     Dashboard                         Hick / atencion     Decision lenta
+  UX-09   ALTA     Dashboard, gráficos               Postel / rendimiento Dashboard vacío
+  UX-10   ALTA     Dashboard, tipografia             WCAG 1.4.3/1.4.4    Lectura difícil
+  UX-11   ALTA     Modal calificaciones              WCAG 1.4.10/4.1.2   No usable móvil
+  UX-12   MEDIA    Global                            Jakob               Ambiguedad
+  UX-13   MEDIA    Loading global                    Nielsen / 4.1.3     Falsa carga
+  UX-14   MEDIA    Carreras Alta/Edicion             Prevención / Postel Cursor salta
+  UX-15   MEDIA    Pagos Alta/Edicion                Nielsen / etica     Cargo sorpresa
+  UX-16   MEDIA    Notas Alta/Edicion/Lista          Jakob / control     Estado inconsistente
+  UX-17   MEDIA    Alta/Edicion/Vista                Hick / Tesler       Abandono accidental
+  UX-18   MEDIA    Listados                          WCAG 1.4.10         Scroll horizontal
+  UX-19   MEDIA    Dashboard, gráficos               WCAG 1.1.1/1.4.1    Datos inaccesibles
+  UX-20   MEDIA    Dashboard, KPIs                   Nielsen / Fitts     Dato no accionable
+  UX-21   MEDIA    Menu superior                     Jakob               Enlace enganoso
+  UX-22   MEDIA    Master-Details                    Fitts / Jakob       Falta contexto
+
+4.2 HALLAZGOS CRÍTICOS Y ALTOS EN DETALLE
+================================================================================
+
+--------------------------------------------------------------------------------
+UX-01  ENLACES MUERTOS EN EL DASHBOARD
+--------------------------------------------------------------------------------
+
+Severidad : CRÍTICA
+Pantalla  : Dashboard, acciones rápidas de todos los roles
+Archivo   : SGUASS.phpr:41121-41125, 41305-41307, 41500-41503, 41692-41694
+Ley       : Jakob (consistencia y modelo mental), navegación, confianza
+
+Evidencia:
+
+    <a href="catedras_list.php" class="sguass-btn-act">Gestion Catedras</a>
+    <a href="cuotas_list.php" class="sguass-btn-act">Control de Cuotas</a>
+    <a href="auditoria_list.php" class="sguass-btn-act">Auditoria Sistema</a>
+
+    <a href="cuotas_list.php" class="sguass-btn-act">Consultar Deudas</a>
+    <a href="constancias_list.php" class="sguass-btn-act">Certificados / Const.</a>
+
+    <a href="calificaciones_list.php" class="sguass-btn-act">Cargar Notas</a>
+    <a href="catedras_list.php" class="sguass-btn-act">Mis Catedras</a>
+    <a href="entregas_tareas_list.php" class="sguass-btn-act">Calificar Trabajos</a>
+
+    <a href="calificaciones_list.php" class="sguass-btn-act">Mis Calificaciones</a>
+    <a href="cuotas_list.php" class="sguass-btn-act">Estado de Cuenta</a>
+
+Verificación en output/:
+
+    Existen:
+      cursos_list.php, materias_list.php, pagos_list.php, notas_list.php,
+      tarea_entregas_list.php, usuarios_list.php, profesores_list.php,
+      estudiantes_list.php, inscripciones_list.php, asistencias_list.php,
+      avisos_list.php, tareas_list.php.
+
+    No existen:
+      catedras_list.php, cuotas_list.php, auditoria_list.php,
+      calificaciones_list.php, constancias_list.php,
+      entregas_tareas_list.php.
+
+Por que falla:
+
+    El usuario ve una accion principal, hace clic y recibe un 404 o una página
+    vacía. Es una violacion directa del modelo mental y de la confianza: el
+    sistema promete una tarea y no la cumple.
+
+Impacto:
+
+    Bloquea tareas de administracion, secretaria, docencia y estudiantes;
+    aumenta llamadas de soporte y hace que el dashboard parezca una demo.
+
+Corrección:
+
+    Ver 6.6.1 y Anexo B. Regla: ningun enlace del dashboard puede apuntar a una
+    página inexistente. Si la página no se va a crear, se elimina el botón.
+
+--------------------------------------------------------------------------------
+UX-02  CONTRASTE INSUFICIENTE
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Global, tema Flatly
+Archivo   : styles/bootstrap/flatly/css/bootstrap-theme.min.css
+            SGUASS.phpr:40908-40923
+Ley       : WCAG 1.4.3, Aesthetic-Usability
+
+Evidencia:
+
+    a { color: #18bc9c; }
+    .label-warning { background-color: #f39c12; }
+    .text-muted { color: #b4bcc2; }
+    .btn-success { color: #ffffff; background-color: #18bc9c; }
+
+    .sguass-kpi-lbl { font-size: 0.74rem; color: #95a5a6; }
+    .sguass-kpi-sub { font-size: 0.78rem; color: #7b8a8b; }
+
+Ratios calculados:
+
+    Combinacion                     Ratio    AA normal   AA grande
+    ------------------------------  -------  ----------  ---------
+    #18bc9c sobre blanco             2.41:1   Falla       Falla
+    #b4bcc2 sobre blanco             1.93:1   Falla       Falla
+    #95a5a6 sobre blanco             2.56:1   Falla       Falla
+    #7b8a8b sobre blanco             3.59:1   Falla       Pasa
+    Blanco sobre #f39c12             2.19:1   Falla       Falla
+    Blanco sobre #18bc9c             2.41:1   Falla       Falla
+    Blanco sobre #e74c3c             3.82:1   Falla       Pasa
+    Blanco sobre #27ae60             2.87:1   Falla       Falla
+    #2c3e50 sobre blanco            10.97:1   Pasa        Pasa
+
+Por que falla:
+
+    Flatly usa turquesa y grises claros para texto. En exteriores, pantallas de
+    baja calidad o con baja visión, el texto desaparece. Aesthetic-Usability se
+    rompe: si no se lee, no se percibe como limpio, se percibe como roto.
+
+Impacto:
+
+    Fatiga visual, errores de lectura, incumplimiento WCAG 1.4.3 y pérdida de
+    confianza en los estados del sistema.
+
+Corrección:
+
+    Ver 6.1. Se mantiene la paleta, pero se oscurecen enlaces, muted y botones;
+    los badges warning pasan a texto azul oscuro sobre ambar.
+
+--------------------------------------------------------------------------------
+UX-03  OBJETIVOS TACTILES DE 14 PX
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Listados, acciones de fila
+Archivo   : templates/estudiantes_list.htm:760-784
+            styles/pages/estudiantes_list.css:17-24
+            styles/pages/pagos_list.css:41-48
+Ley       : Fitts, WCAG 2.5.8 / 2.5.5
+
+Evidencia:
+
+    <a type="button" class="btn-link glyphicon glyphicon-pencil"
+       href="estudiantes_edit.php?{$editlink}" title="Editar"></a>
+
+    <a type="button" class="btn-link glyphicon glyphicon-search"
+       href="estudiantes_view.php?{$editlink}" title="Ver"></a>
+
+    /* estudiantes_list.css */
+    ... { width: 30px; }
+
+Por que falla:
+
+    El glifo mide unos 14 px, no tiene padding y la columna mide 30 px. Dos
+    acciones importantes quedan a pocos pixeles. En móvil, el dedo no distingue
+    Editar de Ver. Viola Fitts y el minimo de 24x24 px de WCAG 2.5.8; no alcanza
+    el objetivo recomendado de 44x44 px.
+
+Impacto:
+
+    Toques accidentales, edicion no deseada, pérdida de tiempo y desconfianza.
+
+Corrección:
+
+    Ver 6.4. Celdas de 104 px y botones de 44x44 px separados por 8 px.
+
+--------------------------------------------------------------------------------
+UX-04  BUSQUEDA SIN NOMBRE ACCESIBLE
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Busqueda simple y Vista
+Archivo   : templates/estudiantes_list.htm:165-178
+            templates/estudiantes_view.htm:225-227
+Ley       : WCAG 1.3.1, 3.3.2, 4.1.2
+
+Evidencia:
+
+    <input type="search" class="form-control" {$searchfor_attrs} size="25">
+
+    <button {$searchbutton_attrs} class="btn btn-primary">
+      <span class="glyphicon glyphicon-search"></span>
+    </button>
+
+    <button type="button" class="btn btn-default dropdown-toggle" ...>
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+      <span class="caret"></span>
+    </button>
+
+Por que falla:
+
+    Un lector de pantalla anuncia "cuadro de edicion" sin decir que buscar; el
+    botón se anuncia como "botón" sin proposito. Viola WCAG 1.3.1 (estructura),
+    3.3.2 (etiquetas) y 4.1.2 (nombre, rol, valor).
+
+Impacto:
+
+    Usuarios de lector de pantalla no pueden usar la busqueda; usuarios visuales
+    no saben si busca por cédula, nombre o matricula.
+
+Corrección:
+
+    Ver 6.4. Placeholder "Buscar por cédula, nombre o matricula",
+    aria-label="Buscar estudiantes" y aria-label en botones icon-only.
+
+--------------------------------------------------------------------------------
+UX-05  LOGIN AMBIGUO E INACCESIBLE
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Login
+Archivo   : templates/.global_login.htm:81-82, 94, 109-110, 177-186
+Ley       : Hick, Jakob, WCAG 3.3.2 / 4.1.2
+
+Evidencia:
+
+    <label ... for="username">Email:</label>
+    <input type="text" class="form-control" name="username" ... id="username">
+
+    <label ... for="password">Contrasena:</label>
+
+    <a type="button" class="btn btn-primary" ...>Aceptar</a>
+    <a type="button" class="btn btn-primary" ...>Continuar</a>
+
+No hay autofocus, autocomplete, required, aria-required, botón "Mostrar
+contraseña" ni enlace de recuperacion. Los dos botones principales tienen el
+mismo peso visual.
+
+Por que falla:
+
+    El campo dice Email pero el sistema probablemente acepta usuario o correo;
+    el gestor de contrasenas no sabe que guardar; el usuario no sabe si Aceptar
+    y Continuar hacen lo mismo. Viola Hick (dos primarias compiten), Jakob
+    (etiqueta incoherente) y WCAG 3.3.2/4.1.2.
+
+Impacto:
+
+    Errores de login, frustracion, abandono y soporte innecesario.
+
+Corrección:
+
+    Ver 6.3. Label "Usuario o correo electronico", un solo botón primario
+    "Ingresar", autocomplete, foco inicial y "Mostrar contrasena".
+
+--------------------------------------------------------------------------------
+UX-06  FORMULARIOS SIN OBLIGATORIOS, AYUDA NI MASCARA
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Alta y Edicion de estudiantes
+Archivo   : SGUASS.phpr:11626 (m_bRequired=0)
+            templates/estudiantes_add.htm:127-219
+Ley       : Postel, Tesler, WCAG 3.3.2
+
+Evidencia:
+
+    <m_bRequired>0</m_bRequired>   <!-- numero_cedula -->
+
+    <div class="r-edit-tooltip" data-helpfor="numero_cedula"></div>
+
+En todo el proyecto no aparece ningun m_strHelpText con contenido. Los tooltips
+de ayuda están vacios. No hay placeholders ni marcas visuales de obligatorio.
+numero_cedula acepta hasta 20 caracteres de texto libre.
+
+Por que falla:
+
+    El sistema no ensena el formato esperado ni impide guardar una cédula
+    invalida. Postel no significa aceptar cualquier cosa: significa ser tolerante
+    en la entrada y estricto en la validacion. Tesler dice que la complejidad
+    debe absorberla el sistema, no el usuario.
+
+Impacto:
+
+    Cedulas mal cargadas, estudiantes duplicados, errores en reportes y
+    retrabajo administrativo.
+
+Corrección:
+
+    Ver 6.5. Required, ayuda <=80 caracteres, placeholder, inputmode numeric y
+    validacion ^\d{6,8}(-\d)?$.
+
+--------------------------------------------------------------------------------
+UX-07  alert() NATIVO EN EL DASHBOARD
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Dashboard
+Archivo   : SGUASS.phpr:42132, 42142, 42185, 42204, 42417, 42831, 43225,
+            43498, 43559, 43770, 44016, 44262, 44508, 44757, 44981, 45141,
+            45426, 45510, 45830, 46014, 46205, 46302
+Ley       : Nielsen (recuperacion de errores), WCAG 4.1.3, rendimiento percibido
+
+Evidencia:
+
+    alert("Atencion: " + (result.message || "Ocurrio un error inesperado..."));
+    alert("No se encontraron cursos asignados a su usuario para calificar.");
+    alert("Seleccione un curso para continuar.");
+    alert("Este curso no tiene estudiantes inscriptos actualmente.");
+    alert("Excelente! Se han guardado y sincronizado " + result.guardados +
+          " calificaciones correctamente.");
+
+Por que falla:
+
+    alert() bloquea el hilo de la UI, no se puede estilizar, no se asocia al
+    campo que causo el error, no tiene contexto persistente y en móvil se ve
+    como un dialogo del sistema. Viola recuperacion de errores de Nielsen y
+    WCAG 4.1.3.
+
+Impacto:
+
+    Interrupciones, pérdida de contexto, mala experiencia en móvil y dificultad
+    para usuarios de lector de pantalla.
+
+Corrección:
+
+    Ver 6.2. Helper SGUASS.notify() y puente controlado para el dashboard.
+
+--------------------------------------------------------------------------------
+UX-08  SOBRECARGA DE ACCIONES EN EL DASHBOARD
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Dashboard
+Archivo   : SGUASS.phpr:41117-41126 (8 acciones Admin)
+            41302-41307 (6 Secretaria)
+            41499-41504 (6 Docente)
+            41692-41697 (6 Estudiante)
+Ley       : Hick, atencion selectiva, Tesler
+
+Evidencia:
+
+    <div class="sguass-btn-grid">
+      <a ...>Padron Alumnos</a>
+      <a ...>Nomina Docentes</a>
+      <a ...>Matriculas</a>
+      <a ...>Gestion Catedras</a>
+      <a ...>Control de Cuotas</a>
+      <a ...>Historial Pagos</a>
+      <a ...>Usuarios y Roles</a>
+      <a ...>Auditoria Sistema</a>
+    </div>
+
+Cada rol tiene 6-8 acciones del mismo tamaño, mas 4 KPIs y 4 gráficos. No hay
+una accion primaria ni agrupacion por frecuencia.
+
+Por que falla:
+
+    Hick indica que el tiempo de decision crece con el numero de opciones; la
+    atencion selectiva se dispersa. El usuario que entra a cobrar tiene que
+    escanear ocho botones y cuatro gráficos antes de encontrar su tarea.
+
+Impacto:
+
+    Paralisis de decision, tareas clave enterradas y sensación de panel de
+    demostracion en lugar de herramienta de trabajo.
+
+Corrección:
+
+    Ver 6.6.2. 3 acciones primarias + "Mas módulos" colapsable.
+
+--------------------------------------------------------------------------------
+UX-09  ECHARTS DESDE CDN SIN FALLBACK
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Dashboard, gráficos
+Archivo   : SGUASS.phpr:40841, 41158-41160
+Ley       : Postel (robustez), rendimiento percibido, Aesthetic-Usability
+
+Evidencia:
+
+    echo '<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>';
+
+    setTimeout(function() {
+        var c1 = echarts.init(document.getElementById('chart_admin_1'));
+        ...
+    }, 200);
+
+No hay integrity, crossorigin, onerror ni verificación de typeof echarts. Si el
+CDN no responde, el script lanza "echarts is not defined" y las cajas quedan
+vacias.
+
+Por que falla:
+
+    El dashboard depende de una red externa para su parte visual principal. No
+    hay mensaje de error ni alternativa. Viola robustez (Postel) y rendimiento
+    percibido: el usuario ve un espacio en blanco y no sabe si esta cargando o
+    se rompió.
+
+Impacto:
+
+    Dashboard incompleto en redes restrictivas, intranets o caidas del CDN;
+    pérdida de confianza.
+
+Corrección:
+
+    Ver 6.6.4. Bundle local + fallback visible + aria de ECharts.
+
+--------------------------------------------------------------------------------
+UX-10  TIPOGRAFIA DIMINUTA Y GRIS CLARO
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Dashboard
+Archivo   : SGUASS.phpr:40908-40923, 40971
+Ley       : WCAG 1.4.3 / 1.4.4, Aesthetic-Usability
+
+Evidencia:
+
+    .sguass-kpi-lbl { font-size: 0.74rem; color: #95a5a6; }
+    .sguass-kpi-sub { font-size: 0.78rem; color: #7b8a8b; }
+    .sguass-btn-act { font-size: 0.86rem; }
+
+Con base de 16 px: 11.8 px, 12.5 px y 13.8 px. Los labels están en gris claro
+sobre blanco.
+
+Por que falla:
+
+    No hay un tamaño mínimo legal, pero 11.8 px es demasiado pequeno para texto
+    de interfaz; combinado con bajo contraste, viola Aesthetic-Usability y las
+    pautas de legibilidad de WCAG 1.4.3/1.4.4.
+
+Impacto:
+
+    Esfuerzo de lectura, especialmente en móvil, pantallas de baja densidad o
+    baja visión.
+
+Corrección:
+
+    Ver 6.1. Labels a 0.875rem y colores #4a5a5b / #5d6d6e.
+
+--------------------------------------------------------------------------------
+UX-11  MODAL DE CALIFICACIONES NO RESPONSIVE NI ACCESIBLE
+--------------------------------------------------------------------------------
+
+Severidad : ALTA
+Pantalla  : Modal de calificaciones masivas
+Archivo   : SGUASS.phpr:42257-42295; inputs 42234-42244
+Ley       : WCAG 1.4.10, 4.1.2, 2.4.3, Fitts
+
+Evidencia:
+
+    <div class="modal fade" id="..." tabindex="-1" role="dialog">
+      <div class="modal-dialog" style="width:96%; max-width:1300px;"
+           role="document">
+        ...
+        <table class="table table-bordered table-hover table-condensed"
+               id="tbl_planilla_bulk">
+          <thead>
+            <tr>
+              <th>Estudiante</th>
+              <th>P1 (15)</th>
+              <th>P2 (15)</th>
+              <th>TP/Lab (15)</th>
+              <th>Asist (5)</th>
+              <th>Proceso (50)</th>
+              <th>Final (50)</th>
+              <th>Extra (50)</th>
+              <th>Mesa (50)</th>
+              <th>Total</th>
+              <th>Nota</th>
+              <th>Estado / Caja</th>
+            </tr>
+          </thead>
+        </table>
+        ...
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+
+    <input type="number" ... style="width:55px;">
+    <input type="number" ... style="width:50px;">
+    <input type="number" ... style="width:60px;">
+
+No hay table-responsive, aria-modal, aria-labelledby, foco inicial ni trampa de
+foco. El botón de cierre solo tiene una x.
+
+Por que falla:
+
+    En un telefono de 360 px, una tabla de 12 columnas con inputs de 55 px no
+    cabe. El modal se desborda o exige zoom. Viola WCAG 1.4.10 (reflow), 4.1.2
+    (nombre/rol) y 2.4.3 (orden de foco). El cierre de 14 px viola Fitts.
+
+Impacto:
+
+    El docente no puede calificar desde el movil; usuarios de teclado o lector
+    quedan atrapados o desorientados.
+
+Corrección:
+
+    Ver 6.9. table-responsive, aria-modal, aria-labelledby, cierre 44x44, foco
+    inicial y trampa de foco.
+
+4.3 HALLAZGOS MEDIOS EN DETALLE
+================================================================================
+
+--------------------------------------------------------------------------------
+UX-12  TERMINOLOGÍA INCONSISTENTE
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : estudiantes_list.htm:114 ("Borrar articulos seleccionados");
+            .global_login.htm:82 ("Email");
+            pageevents_pagos.js:3 ("Cobrados / Al Dia");
+            pageevents_notas.js:2 ("Reprobado");
+            SGUASS.phpr:41118-41125 ("Padron", "Nomina", "Matriculas",
+            "Catedras").
+Ley       : Jakob (consistencia)
+Impacto   : El usuario debe traducir mentalmente entre sinonimos; una accion
+            destructiva parece inofensiva.
+Corrección: Glosario único en Anexo A; usar "Eliminar seleccionados",
+            "Usuario o correo", "Pagado", "Inhabilitado por Proceso",
+            "A Examen Extraordinario", "Estudiantes", "Profesores",
+            "Inscripciones", "Catedras".
+
+--------------------------------------------------------------------------------
+UX-13  LOADING FALSO Y EN INGLES
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : templates/loadindicator.htm:48 ("Loading .....") y :67
+            (setTimeout de 1500 ms).
+Ley       : Nielsen (visibilidad del estado), WCAG 4.1.3, rendimiento percibido
+Impacto   : Falsa sensación de carga, parpadeo y texto en otro idioma.
+Corrección: Ver 6.8. "Cargando..." y ocultar en window.load con failsafe 15 s.
+
+--------------------------------------------------------------------------------
+UX-14  FORMATO MONETARIO EN CADA TECLA
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : include/runnerJS/events/pageevents_carreras.js:2-6.
+            Formatea en input/keyup con ctrl.setValue(); elimina IsNumeric.
+Ley       : Prevención de errores, Postel
+Impacto   : El cursor salta al editar en el medio; el usuario no puede escribir
+            con naturalidad; se borran caracteres no numericos sin aviso.
+Corrección: Ver 6.5.4. Formatear en blur; validar antes de guardar.
+
+--------------------------------------------------------------------------------
+UX-15  MORA AUTOMATICA SILENCIOSA
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : include/runnerJS/events/pageevents_pagos.js:2-4.
+            Calcula monto * 0.02 * meses, asigna la mora y cambia Pendiente a
+            Vencido sin explicacion.
+Ley       : Nielsen (feedback), Tesler, etica
+Impacto   : El usuario ve cambiar un importe sin saber por que; riesgo de
+            disputas y de percibirlo como cargo sorpresa.
+Corrección: Ver 6.5.5. Aviso SGUASS.notify, ayuda en el campo y edicion manual.
+
+--------------------------------------------------------------------------------
+UX-16  CONDICIÓN DE NOTAS INCONSISTENTE
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : include/runnerJS/events/pageevents_notas.js:2-3.
+            prom >= 60 -> Aprobado; si no -> Reprobado.
+            El dashboard usa <30 -> Inhabilitado y A Examen Extraordinario.
+Ley       : Jakob, control del usuario
+Impacto   : El mismo alumno puede aparecer Reprobado en una pantalla e
+            Inhabilitado en otra.
+Corrección: Ver 6.5.6. Una única funcion SGUASS.condición(prom).
+
+--------------------------------------------------------------------------------
+UX-17  JERARQUIA DE ACCIONES EN ALTA/EDICION/VISTA
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : estudiantes_add.htm:67-73 (Volver / Ver / Editar antes de guardar);
+            :248-265 (Guardar / Volver / Cancelar);
+            estudiantes_view.htm:204-228 (dos default y hamburguesa).
+Ley       : Hick, Tesler, prevención de errores
+Impacto   : El usuario puede abandonar el formulario sin guardar; no hay una
+            accion primaria clara.
+Corrección: Ver 6.5.1. Ocultar Ver/Editar en Alta, dejar Guardar + Cancelar y
+            mover Volver a breadcrumb.
+
+--------------------------------------------------------------------------------
+UX-18  GRID CON NOWRAP Y COLUMNAS DE 30 PX
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : estudiantes_list.css:2-27; pagos_list.css:2-48.
+Ley       : WCAG 1.4.10, Fitts
+Impacto   : En móvil, la tabla se desborda sin indicacion; el usuario no sabe
+            que puede desplazarse.
+Corrección: Ver 6.1 y 6.4. table-responsive y celdas de acciones de 104 px.
+
+--------------------------------------------------------------------------------
+UX-19  GRÁFICOS SOLO POR COLOR, SIN ALTERNATIVA
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : SGUASS.phpr:41132-41144. Divs sin aria-label; ECharts dibuja canvas.
+Ley       : WCAG 1.1.1, 1.4.1
+Impacto   : Usuarios ciegos o con daltonismo no acceden a la información.
+Corrección: Ver 6.6.4. aria: { enabled: true, decal: { show: true } } y tabla
+            oculta con los datos.
+
+--------------------------------------------------------------------------------
+UX-20  KPIS NO ACCIONABLES
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : SGUASS.phpr:41091-41112. Tarjetas div sin enlace.
+Ley       : Nielsen (control del usuario), Fitts
+Impacto   : El usuario ve "Pendiente y Vencido" pero no puede hacer clic para
+            ver las cuotas; debe memorizar el dato y navegar manualmente.
+Corrección: Ver 6.6.3. Convertir cada tarjeta en enlace a la lista filtrada.
+
+--------------------------------------------------------------------------------
+UX-21  "AREA ADMIN" MAL ENLAZADO
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : templates/.global_menu.htm:72-74.
+            <a href="admin_rights_list.php">Area Admin</a>
+Ley       : Jakob, modelo mental
+Impacto   : El usuario espera un panel y llega a una tabla de derechos.
+Corrección: Ver 6.6.5. Enlazar a admin_members_list.php o a una página de inicio
+            admin; si se quiere permisos, etiquetar "Permisos".
+
+--------------------------------------------------------------------------------
+UX-22  MASTER-DETAILS SIN CONTEXTO
+--------------------------------------------------------------------------------
+
+Severidad : MEDIA
+Evidencia : templates/carreras_masterlist.htm:14-19.
+            btn-link btn-xs "Regresar a la tabla principal" y encabezado
+            generico "carreras masterlist".
+Ley       : Fitts, Jakob, reconocimiento
+Impacto   : El enlace es un target mínimo; el usuario no sabe de que carrera
+            esta viendo las materias.
+Corrección: Ver 6.7. Breadcrumb "Carreras / [Nombre] / Materias" y botón de
+            44 px.
+
+4.4 COBERTURA DE LEYES Y PRINCIPIOS
+================================================================================
+
+  Ley / principio          Hallazgos
+  -----------------------  ------------------------------------------------
+  Jakob                    UX-01, UX-05, UX-12, UX-16, UX-21, UX-22
+  Fitts                    UX-03, UX-11, UX-18, UX-22
+  Hick                     UX-05, UX-08, UX-17
+  Tesler                   UX-06, UX-08, UX-15, UX-17
+  Postel                   UX-06, UX-09, UX-14
+  Aesthetic-Usability      UX-02, UX-09, UX-10
+  Atencion selectiva       UX-08, UX-10, UX-12
+  WCAG 2.1                 UX-02, UX-03, UX-04, UX-05, UX-06, UX-07,
+                           UX-10, UX-11, UX-13, UX-18, UX-19
+  Rendimiento percibido    UX-07, UX-09, UX-13
+  Etica / dark patterns    UX-12, UX-15
+
+
+================================================================================
+5. CONTRASTE Y ACCESIBILIDAD
+================================================================================
+
+5.1 RATIOS CALCULADOS
+--------------------------------------------------------------------------------
+
+Formula WCAG 2.1. AA normal exige 4.5:1; AA grande exige 3:1 para texto de
+18.66 px en negrita o 24 px normal.
+
+  Elemento                       Color texto   Color fondo   Ratio
+  -----------------------------  ------------  ------------  -------
+  Enlace Flatly                  #18bc9c       #ffffff       2.41:1
+  Texto muted Flatly             #b4bcc2       #ffffff       1.93:1
+  Label KPI dashboard            #95a5a6       #ffffff       2.56:1
+  Sub KPI dashboard              #7b8a8b       #ffffff       3.59:1
+  Badge warning                  #ffffff       #f39c12       2.19:1
+  Botón success                  #ffffff       #18bc9c       2.41:1
+  Badge danger                   #ffffff       #e74c3c       3.82:1
+  Badge success                  #ffffff       #27ae60       2.87:1
+  Texto principal                #2c3e50       #ffffff      10.97:1
+
+Conclusiones:
+
+  - El texto principal de Flatly si cumple.
+  - Los enlaces, muted, warning y success no cumplen para texto normal.
+  - El dashboard agrava el problema con tamanos de 11.8-12.5 px.
+
+5.2 OBJETIVOS TÁCTILES
+--------------------------------------------------------------------------------
+
+  Objetivo recomendado: 44x44 px.
+  Mínimo WCAG 2.5.8: 24x24 px.
+  Separacion recomendada: 8 px.
+
+  Elemento                  Actual          Recomendado
+  ------------------------  --------------  -----------------
+  Editar fila               ~14 px          44x44 px
+  Ver fila                  ~14 px          44x44 px
+  Columna de acciones       30 px           104 px
+  Cerrar modal              ~14 px          44x44 px
+  Volver en masterlist      btn-xs          >=44 px
+
+5.3 NOMBRES ACCESIBLES
+--------------------------------------------------------------------------------
+
+  Elemento                  Nombre actual        Nombre recomendado
+  ------------------------  -------------------  --------------------------
+  Input busqueda            (ninguno)            "Buscar estudiantes"
+  Botón buscar              (ninguno)            "Buscar"
+  Editar fila               title="Editar"       aria-label="Editar registro"
+  Ver fila                  title="Ver"          aria-label="Ver registro"
+  Hamburguesa Vista         (ninguno)            "Mas acciones"
+  Cerrar modal              "x"                  "Cerrar"
+  Iconos glyphicon/fa       (se anuncian)        aria-hidden="true"
+
+5.4 FOCO Y TECLADO
+--------------------------------------------------------------------------------
+
+  - El foco visible se refuerza con outline de 3 px en 6.1.
+  - Los modales deben recibir foco en el primer control y atrapar Tab.
+  - Esc debe cerrar el modal.
+  - Al cerrar, el foco debe volver al botón que abrio el modal.
+  - Evitar outline:none. No se encontro que general.css afecte estas páginas,
+    pero cualquier regla nueva debe respetar el foco.
+
+
+================================================================================
+6. GUÍA DE IMPLEMENTACIÓN EN PHPRUNNER 10.0
+================================================================================
+
+6.0 ORDEN DE TRABAJO
+--------------------------------------------------------------------------------
+
+  1. Backup del .phpr y de output/. Publicar en staging.
+  2. Corregir enlaces muertos (UX-01).
+  3. Aplicar CSS global (6.1).
+  4. Aplicar JS global (6.2).
+  5. Login (6.3).
+  6. List y Search (6.4).
+  7. Add, Edit y View (6.5).
+  8. Dashboard, gráficos y KPIs (6.6).
+  9. Master-Details (6.7).
+  10. Loading y modal (6.8 y 6.9).
+  11. QA (6.10).
+
+Todos los cambios se hacen desde la UI de PHPRunner. Las rutas de archivo se
+indican solo como referencia de lo que PHPRunner genera. No edites los .php
+generados a mano.
+
+6.1 CSS GLOBAL
+--------------------------------------------------------------------------------
+
+Donde:
+  PHPRunner -> Styles -> Custom CSS -> crear/editar styles/custom/custom.css.
+  Si el directorio no existe, PHPRunner lo crea al guardar.
+
+Nota:
+  Este archivo se carga antes del CSS de página. Por eso las reglas de acciones
+  usan !important y clases añadidas por JavaScript.
+
+Contenido:
+
+    /* ============================================================
+       SGUASS UX 1.0 - overrides globales
+       PHPRunner 10.0 - Bootstrap 3 / Flatly
+       ============================================================ */
+
+    :root{
+      --sguass-link:#0e6655;
+      --sguass-link-hover:#0b5346;
+      --sguass-muted:#5d6d6e;
+      --sguass-primary:#2c3e50;
+      --sguass-success:#0e6655;
+      --sguass-danger:#b03a2e;
+      --sguass-focus:#e67e22;
+    }
+
+    /* 1. Contraste WCAG AA */
+    a{color:var(--sguass-link);}
+    a:hover,a:focus{color:var(--sguass-link-hover);}
+    .text-muted{color:var(--sguass-muted)!important;}
+    .label-warning{background-color:#f39c12!important;color:#2c3e50!important;}
+    .btn-success{background-color:var(--sguass-success);
+                 border-color:var(--sguass-success);}
+    .btn-success:hover,.btn-success:focus{background-color:#0b5346;
+                                          border-color:#0b5346;}
+    .btn-danger{background-color:var(--sguass-danger);
+                border-color:var(--sguass-danger);}
+    .alert-info{color:#1b4f72;background-color:#eaf2f8;border-color:#aed6f1;}
+    .alert-success{color:#0b5346;background-color:#e8f8f5;
+                   border-color:#a3e4d7;}
+    .alert-warning{color:#6e4c00;background-color:#fef5e7;
+                   border-color:#f8c471;}
+    .alert-danger{color:#78281f;background-color:#fdedec;
+                  border-color:#f5b7b1;}
+
+    /* 2. Foco visible */
+    a:focus,button:focus,input:focus,select:focus,textarea:focus,
+    .btn:focus,.btn:active:focus{
+      outline:3px solid var(--sguass-focus)!important;
+      outline-offset:2px!important;
+      box-shadow:none!important;
+    }
+
+    /* 3. Objetivos tactiles 44x44 en grids */
+    [data-itemtype="grid_edit"] a,
+    [data-itemtype="grid_view"] a,
+    [data-itemtype="grid_delete"] a,
+    [data-itemtype="grid_inline_cancel"] a,
+    [data-itemtype="grid_inline_save"] a{
+      display:inline-flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      min-width:44px!important;
+      min-height:44px!important;
+      padding:8px!important;
+      margin:0 4px!important;
+      border-radius:6px!important;
+      font-size:18px!important;
+      line-height:1!important;
+      text-decoration:none!important;
+    }
+    [data-itemtype="grid_edit"] a:hover,
+    [data-itemtype="grid_view"] a:hover{background:#eaf2f8!important;}
+    [data-itemtype="grid_delete"] a:hover{background:#fdedec!important;}
+    .sguass-actions-cell{
+      min-width:104px!important;
+      width:104px!important;
+      white-space:nowrap!important;
+      text-align:center!important;
+    }
+
+    /* 4. Tipografia del dashboard */
+    .sguass-kpi-lbl{font-size:.875rem!important;color:#4a5a5b!important;
+                    letter-spacing:.02em;}
+    .sguass-kpi-num{font-size:1.75rem!important;}
+    .sguass-kpi-sub{font-size:.875rem!important;
+                    color:var(--sguass-muted)!important;}
+    .sguass-btn-act{min-height:44px;display:inline-flex;align-items:center;
+                    justify-content:center;font-size:.95rem!important;}
+    .sguass-title-sec{font-size:1rem!important;}
+    .sguass-title-sec .sub{font-size:.875rem!important;
+                           color:var(--sguass-muted)!important;}
+    .sguass-more{margin-top:.75rem;}
+    .sguass-more summary{cursor:pointer;font-weight:700;
+                         color:var(--sguass-link);padding:.5rem 0;
+                         min-height:44px;display:flex;align-items:center;}
+    .sguass-more summary:focus{outline:3px solid var(--sguass-focus);
+                               outline-offset:2px;}
+
+    /* 5. KPIs clicables */
+    a.sguass-kpi-card{text-decoration:none!important;color:inherit!important;
+                      transition:transform .15s ease,box-shadow .15s ease;}
+    a.sguass-kpi-card:hover,a.sguass-kpi-card:focus{transform:translateY(-2px);
+      box-shadow:0 6px 18px rgba(0,0,0,.12);}
+
+    /* 6. Responsive */
+    .table-responsive{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    @media (max-width:767px){
+      .table-responsive > table{min-width:760px;}
+      .modal-dialog{width:auto!important;
+                    max-width:calc(100% - 16px)!important;
+                    margin:8px!important;}
+      .modal-body{padding:8px!important;}
+      .modal-body .table-responsive > table{min-width:980px;}
+      .modal-body input[type="number"]{min-width:64px!important;}
+      .sguass-kpi-grid,.sguass-btn-grid,.sguass-charts-grid{
+        grid-template-columns:1fr!important;}
+    }
+
+    /* 7. Toasts */
+    #sguass-toast-host{position:fixed;top:16px;right:16px;z-index:20000;
+      max-width:min(420px,calc(100vw - 32px));}
+    .sguass-toast{box-shadow:0 8px 24px rgba(0,0,0,.18);border-radius:6px;
+      margin:0 0 8px;padding:12px 16px;font-size:14px;}
+
+    /* 8. Login: mostrar contrasena */
+    .sguass-pass-wrap{position:relative;}
+    .sguass-pass-wrap .form-control{padding-right:96px;}
+    .sguass-toggle-pass{position:absolute;right:8px;top:50%;
+      transform:translateY(-50%);z-index:2;min-height:36px;}
+
+    /* 9. Loading */
+    #loading .text{font-size:14px;}
+
+6.2 JAVASCRIPT GLOBAL
+--------------------------------------------------------------------------------
+
+Donde:
+  PHPRunner -> Events -> Application Events -> JavaScript OnLoad.
+  Si el build no muestra eventos globales, usar Page Designer -> página ->
+  Events -> JavaScript OnLoad en las páginas principales.
+
+Contenido:
+
+    (function (window, document) {
+      'use strict';
+      var SGUASS = window.SGUASS = window.SGUASS || {};
+
+      /* ---------- 1. Notificaciones no bloqueantes ---------- */
+      SGUASS.notify = function (message, type, timeout) {
+        if (!window.jQuery) return;
+        type = type || 'info';
+        var $host = $('#sguass-toast-host');
+        if (!$host.length) {
+          $host = $('<div id="sguass-toast-host" aria-live="assertive" ' +
+                    'aria-atomic="true"></div>').appendTo('body');
+        }
+        var $alert = $('<div class="alert sguass-toast" role="alert"></div>')
+          .addClass('alert-' + type)
+          .text(message);
+        $host.append($alert);
+        setTimeout(function () {
+          $alert.fadeOut(200, function () { $(this).remove(); });
+        }, timeout || 6000);
+        return $alert;
+      };
+
+      /* Puente solo para el dashboard: reemplaza alert() nativo. */
+      SGUASS.installAlertBridge = function () {
+        if (!document.querySelector('.sguass-kpi-grid') ||
+            window.__sguassAlertBridge) return;
+        window.__sguassAlertBridge = true;
+        window.alert = function (msg) {
+          var text = String(msg || '');
+          var type = /excelente|guardad|correct|sincroniz|exito/i.test(text)
+            ? 'success'
+            : /atenci|error|no se|seleccione|ingrese|debe|invalid/i.test(text)
+              ? 'danger'
+              : 'info';
+          SGUASS.notify(text, type, type === 'danger' ? 9000 : 5000);
+        };
+      };
+
+      /* ---------- 2. Accesibilidad y responsive ---------- */
+      SGUASS.enhanceA11y = function () {
+        if (!window.jQuery) return;
+
+        $('input[type="search"]').each(function () {
+          var $i = $(this);
+          if (!$i.attr('aria-label') && !$i.attr('placeholder')) {
+            $i.attr({
+              'aria-label': 'Buscar en la lista',
+              placeholder: 'Buscar...'
+            });
+          }
+        });
+
+        $('button, a').filter(function () {
+          return $(this).find('.glyphicon-search').length &&
+                 !$(this).text().trim();
+        }).attr({ 'aria-label': 'Buscar', title: 'Buscar' });
+
+        $('.glyphicon, .fa').attr('aria-hidden', 'true');
+
+        $('[data-itemtype="grid_edit"] a')
+          .attr({ 'aria-label': 'Editar registro', title: 'Editar' });
+        $('[data-itemtype="grid_view"] a')
+          .attr({ 'aria-label': 'Ver registro', title: 'Ver' });
+        $('[data-itemtype="grid_delete"] a')
+          .attr({ 'aria-label': 'Eliminar registro', title: 'Eliminar' });
+        $('[data-itemtype="grid_inline_cancel"] a')
+          .attr({ 'aria-label': 'Cancelar edicion', title: 'Cancelar' });
+
+        $('button.dropdown-toggle').filter(function () {
+          return $(this).find('.glyphicon-menu-hamburger').length;
+        }).attr({ 'aria-label': 'Mas acciones', title: 'Mas acciones' });
+
+        $('table.r-grid, table.bs-grid').each(function () {
+          if (!$(this).parent().hasClass('table-responsive')) {
+            $(this).wrap('<div class="table-responsive"></div>');
+          }
+        });
+
+        $('[data-itemtype="grid_edit"], [data-itemtype="grid_view"], ' +
+          '[data-itemtype="grid_delete"]')
+          .closest('td').addClass('sguass-actions-cell');
+
+        $('.modal').each(function () {
+          var $m = $(this);
+          if (!$m.attr('aria-modal')) $m.attr('aria-modal', 'true');
+          var $title = $m.find('.modal-title').first();
+          if ($title.length && !$m.attr('aria-labelledby')) {
+            if (!$title.attr('id')) {
+              $title.attr('id', 'sguass-modal-title-' +
+                Math.random().toString(36).slice(2, 8));
+            }
+            $m.attr('aria-labelledby', $title.attr('id'));
+          }
+          $m.find('.close').attr({ 'aria-label': 'Cerrar', title: 'Cerrar' });
+          $m.find('.modal-body > table').each(function () {
+            if (!$(this).parent().hasClass('table-responsive')) {
+              $(this).wrap('<div class="table-responsive"></div>');
+            }
+          });
+        });
+
+        $('#loading .text').text('Cargando...');
+      };
+
+      /* ---------- 3. Foco en modales ---------- */
+      SGUASS.enhanceModals = function () {
+        if (!window.jQuery) return;
+        $(document).on('shown.bs.modal', '.modal', function () {
+          $(this).find('[autofocus], input, select, textarea, button')
+            .filter(':visible').first().trigger('focus');
+        });
+        $(document).on('keydown', '.modal', function (e) {
+          if (e.key !== 'Tab') return;
+          var $f = $(this).find(
+            'a[href], button:not([disabled]), input:not([disabled]), ' +
+            'select, textarea').filter(':visible');
+          if (!$f.length) return;
+          var first = $f[0], last = $f[$f.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault(); last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault(); first.focus();
+          }
+        });
+      };
+
+      /* ---------- 4. Arranque ---------- */
+      SGUASS.ready = function () {
+        SGUASS.enhanceA11y();
+        SGUASS.enhanceModals();
+        SGUASS.installAlertBridge();
+        if (window.jQuery) {
+          $(document).ajaxComplete(function () {
+            setTimeout(SGUASS.enhanceA11y, 0);
+          });
+        }
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', SGUASS.ready);
+      } else {
+        SGUASS.ready();
+      }
+    })(window, document);
+
+6.3 LOGIN
+--------------------------------------------------------------------------------
+
+Donde:
+  Page Designer -> página de login -> seleccionar campos y botones -> Properties.
+
+Cambios:
+
+  username:
+    Label       : "Usuario o correo electronico"
+    Required    : Si
+    Help        : "Usa el mismo correo con el que fuiste registrado."
+    Autocomplete: username
+    Foco inicial: Si
+
+  password:
+    Label       : "Contraseña"
+    Required    : Si
+    Help        : "Mínimo 8 caracteres."
+    Autocomplete: current-password
+
+  Botón "Aceptar":
+    Texto       : "Ingresar"
+    Estilo      : btn-primary
+
+  Botón "Continuar":
+    Ocultar si no tiene un proposito distinto y claro.
+    Si es "continuar como invitado", dejar solo el enlace "Conectar como
+    invitado".
+
+  Recuperacion:
+    Agregar "Olvidaste tu contraseña?" si existe página de reseteo.
+
+JavaScript OnLoad del login:
+
+    (function () {
+      var u = document.getElementById('username');
+      var p = document.getElementById('password');
+
+      if (u) {
+        u.setAttribute('autocomplete', 'username');
+        u.setAttribute('autocapitalize', 'none');
+        u.setAttribute('spellcheck', 'false');
+        u.setAttribute('aria-required', 'true');
+        if (!u.value) u.focus();
+      }
+
+      if (p) {
+        p.setAttribute('autocomplete', 'current-password');
+        p.setAttribute('aria-required', 'true');
+
+        var wrap = p.parentNode;
+        wrap.classList.add('sguass-pass-wrap');
+
+        if (!wrap.querySelector('.sguass-toggle-pass')) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'btn btn-default sguass-toggle-pass';
+          btn.textContent = 'Mostrar';
+          btn.setAttribute('aria-pressed', 'false');
+          btn.setAttribute('aria-label', 'Mostrar contrasena');
+
+          btn.addEventListener('click', function () {
+            var show = p.type === 'password';
+            p.type = show ? 'text' : 'password';
+            btn.textContent = show ? 'Ocultar' : 'Mostrar';
+            btn.setAttribute('aria-pressed', show ? 'true' : 'false');
+            btn.setAttribute('aria-label',
+              show ? 'Ocultar contrasena' : 'Mostrar contrasena');
+            p.focus();
+          });
+
+          wrap.appendChild(btn);
+        }
+      }
+    })();
+
+Resultado esperado:
+  Un solo botón primario, foco inicial en usuario, gestor de contrasenas
+  funcional y opcion de ver la contraseña.
+
+6.4 LIST Y SEARCH
+--------------------------------------------------------------------------------
+
+Donde:
+  Page Designer -> estudiantes_list -> input de busqueda, botón de busqueda,
+  botones de fila y botón de borrado.
+
+Cambios:
+
+  Input de busqueda:
+    Placeholder : "Buscar por cédula, nombre o matricula"
+    aria-label  : "Buscar estudiantes"
+
+  Botón de busqueda:
+    title       : "Buscar"
+    aria-label  : "Buscar"
+
+  Acciones de fila:
+    Mantener iconos, pero con aria-label "Editar registro" / "Ver registro"
+    y target 44x44.
+
+  Botón "Añadir nuevo":
+    Texto       : "Nuevo estudiante"
+
+  Borrado masivo:
+    Texto       : "Eliminar seleccionados"
+    Estilo      : btn-danger
+    Confirmacion: "Eliminar los registros seleccionados? Esta accion no se
+                   puede deshacer."
+
+JavaScript OnLoad del listado:
+
+    (function () {
+      var $q = $('input[type="search"]').first();
+      if ($q.length) {
+        $q.attr({
+          placeholder: 'Buscar por cédula, nombre o matricula',
+          'aria-label': 'Buscar estudiantes'
+        });
+      }
+
+      $('button').filter(function () {
+        return $(this).find('.glyphicon-search').length;
+      }).attr({ 'aria-label': 'Buscar', title: 'Buscar' });
+    })();
+
+CSS de página:
+
+    .sguass-actions-cell{
+      min-width:104px!important;
+      width:104px!important;
+      white-space:nowrap!important;
+      text-align:center!important;
+    }
+
+Aplicar el mismo bloque a pagos_list.css y a cualquier listado con acciones de
+fila. No es necesario repetir white-space:nowrap en todas las columnas; dejalo
+solo donde realmente haga falta.
+
+6.5 ADD, EDIT Y VIEW
+--------------------------------------------------------------------------------
+
+6.5.1 Campos y ayudas
+
+Donde:
+  Page Designer -> estudiantes_add / estudiantes_edit -> seleccionar campo ->
+  Properties.
+
+  Campo           Required  Help text (<=80)                       Placeholder
+  --------------  --------  --------------------------------------  -----------------
+  numero_cedula   Si        "Solo numeros y guion. Ej.: 1234567-8." "Ej.: 1234567-8"
+  fecha_ingreso   Si        "Fecha de alta del estudiante."         "DD/MM/AAAA"
+  usuario_id      Si        "Usuario del sistema asociado."         "Seleccionar"
+  carrera_id      Si        "Carrera en la que se inscribe."        "Seleccionar"
+  matricula       Si        "Código único de matricula."            "Ej.: 2026-001"
+
+Validacion de numero_cedula:
+  - maxlength 10
+  - inputmode numeric
+  - regex ^\d{6,8}(-\d)?$
+  - mensaje: "Ingresa 6 a 8 digitos; el guion y el digito verificador son
+    opcionales."
+
+6.5.2 Acciones
+
+  Alta:
+    Ocultar "Ver" y "Editar" hasta que el registro exista.
+    Dejar solo "Guardar" (primario) y "Cancelar" (default).
+    Mover "Volver a la lista" a un breadcrumb.
+
+  Edicion:
+    "Guardar" + "Cancelar".
+    Si se necesita "Volver", que sea un enlace de texto, no un tercer botón.
+
+  Vista:
+    "Volver a la lista" como btn-default de 44 px.
+    Hamburguesa con aria-label="Mas acciones".
+
+6.5.3 JavaScript de validacion de cédula
+
+Donde:
+  Events -> estudiantes -> JavaScript OnLoad. Se registra para Alta y Edicion.
+
+    (function () {
+      var pages = [
+        Runner.pages.constants.PAGE_ADD,
+        Runner.pages.constants.PAGE_EDIT
+      ];
+
+      pages.forEach(function (pageType) {
+        Runner.pages.PageSettings.addPageEvent(
+          'estudiantes', pageType, 'afterPageReady',
+          function (pageObj, proxy, pageid) {
+            var input = document.querySelector(
+              'input[name="numero_cedula"]');
+            if (!input) return;
+
+            input.setAttribute('inputmode', 'numeric');
+            input.setAttribute('maxlength', '10');
+            input.setAttribute('placeholder', 'Ej.: 1234567-8');
+
+            var help = document.querySelector(
+              '[data-helpfor="numero_cedula"]');
+            if (help) help.id = 'sguass-cedula-help';
+            input.setAttribute('aria-describedby', 'sguass-cedula-help');
+
+            function valida() {
+              return /^\d{6,8}(-\d)?$/.test(input.value.trim());
+            }
+
+            input.addEventListener('blur', function () {
+              input.setCustomValidity(
+                valida() || !input.value.trim()
+                  ? ''
+                  : 'Ingresa 6 a 8 digitos; el guion y el digito ' +
+                    'verificador son opcionales.'
+              );
+            });
+
+            pageObj.on('beforeSave', function () {
+              if (!valida()) {
+                input.setCustomValidity(
+                  'Ingresa 6 a 8 digitos; el guion y el digito ' +
+                  'verificador son opcionales.'
+                );
+                input.reportValidity();
+                return false;
+              }
+              return true;
+            });
+          }
+        );
+      });
+    })();
+
+6.5.4 Formato monetario en carreras
+
+Donde:
+  include/runnerJS/events/pageevents_carreras.js, eventos de Alta y Edicion.
+
+Problema:
+  Formatea en input/keyup con ctrl.setValue(), lo que mueve el cursor.
+
+Solucion:
+  Formatear en blur y limpiar antes de guardar.
+
+    function bindMoney(pageObj, pageid) {
+      var moneyFields = [
+        'costo_matricula',
+        'costo_semestre',
+        'costo_derecho_examen'
+      ];
+
+      function onlyDigits(v) {
+        return String(v == null ? '' : v).replace(/\D/g, '');
+      }
+
+      function formatMiles(v) {
+        var n = onlyDigits(v).replace(/^0+(?!$)/, '');
+        return n ? n.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '';
+      }
+
+      moneyFields.forEach(function (name) {
+        var ctrl = Runner.getControl(pageid, name);
+        if (!ctrl) return;
+
+        ctrl.on('focus', function () {
+          ctrl.setValue(onlyDigits(ctrl.getValue()));
+        });
+
+        ctrl.on('blur', function () {
+          ctrl.setValue(formatMiles(ctrl.getValue()));
+        });
+      });
+
+      pageObj.on('beforeSave', function () {
+        moneyFields.forEach(function (name) {
+          var ctrl = Runner.getControl(pageid, name);
+          if (ctrl) ctrl.setValue(onlyDigits(ctrl.getValue()));
+        });
+        return true;
+      });
+    }
+
+    Runner.pages.PageSettings.addPageEvent(
+      'carreras', Runner.pages.constants.PAGE_ADD, 'afterPageReady',
+      function (pageObj, proxy, pageid) {
+        bindMoney(pageObj, pageid);
+      });
+
+    Runner.pages.PageSettings.addPageEvent(
+      'carreras', Runner.pages.constants.PAGE_EDIT, 'afterPageReady',
+      function (pageObj, proxy, pageid) {
+        bindMoney(pageObj, pageid);
+      });
+
+6.5.5 Mora en pagos
+
+Donde:
+  include/runnerJS/events/pageevents_pagos.js, eventos de Alta y Edicion.
+
+Problema:
+  Calcula 2% por cada 30 días y cambia el estado sin aviso.
+
+Solucion:
+  Avisar, permitir edicion manual y no recalcular si el usuario ya edito la mora.
+
+    function bindMora(pageObj, pageid) {
+      var estado = Runner.getControl(pageid, 'estado');
+      var fechaPago = Runner.getControl(pageid, 'fecha_pago');
+      var fechaVenc = Runner.getControl(pageid, 'fecha_vencimiento');
+      var monto = Runner.getControl(pageid, 'monto');
+      var mora = Runner.getControl(pageid, 'multa_mora');
+      var moraAuto = false;
+
+      function hoyISO() {
+        var d = new Date();
+        var m = d.getMonth() + 1;
+        var dia = d.getDate();
+        return d.getFullYear() + '-' +
+          (m < 10 ? '0' + m : m) + '-' +
+          (dia < 10 ? '0' + dia : dia);
+      }
+
+      function calcularMora() {
+        var fv = fechaVenc.getValue();
+        var m = parseInt(String(monto.getValue()).replace(/\D/g, ''), 10) || 0;
+        if (!fv || m <= 0) return;
+
+        var p = fv.split('-');
+        var venc = new Date(+p[0], +p[1] - 1, +p[2]);
+        var hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        if (venc < hoy) {
+          var dias = Math.floor((hoy - venc) / 86400000);
+          var periodos = Math.max(1, Math.ceil(dias / 30));
+          var valor = Math.round(m * 0.02 * periodos);
+          mora.setValue(valor);
+          moraAuto = true;
+
+          if (window.SGUASS && SGUASS.notify) {
+            SGUASS.notify(
+              'Mora calculada: ' + periodos +
+              ' periodo(s) de 30 dias al 2%. Puedes editarla.',
+              'info', 7000
+            );
+          }
+
+          if (estado.getValue() === 'Pendiente') {
+            estado.setValue('Vencido');
+          }
+        } else {
+          mora.setValue(0);
+          moraAuto = false;
+          if (estado.getValue() === 'Vencido') {
+            estado.setValue('Pendiente');
+          }
+        }
+      }
+
+      mora.on('change', function () { moraAuto = false; });
+      fechaVenc.on('change', calcularMora);
+      monto.on('change', function () { if (!moraAuto) calcularMora(); });
+
+      estado.on('change', function () {
+        if (estado.getValue() === 'Pagado' && !fechaPago.getValue()) {
+          fechaPago.setValue(hoyISO());
+        }
+        if (estado.getValue() !== 'Pagado') {
+          fechaPago.setValue('');
+        }
+      });
+    }
+
+    Runner.pages.PageSettings.addPageEvent(
+      'pagos', Runner.pages.constants.PAGE_ADD, 'afterPageReady',
+      function (pageObj, proxy, pageid) {
+        bindMora(pageObj, pageid);
+      });
+
+    Runner.pages.PageSettings.addPageEvent(
+      'pagos', Runner.pages.constants.PAGE_EDIT, 'afterPageReady',
+      function (pageObj, proxy, pageid) {
+        bindMora(pageObj, pageid);
+      });
+
+6.5.6 Condición de notas
+
+Donde:
+  include/runnerJS/events/pageevents_notas.js, eventos de Alta y Edicion.
+
+Problema:
+  Usa >=60 -> Aprobado; si no -> Reprobado, y no coincide con el dashboard.
+
+Solucion:
+  Una sola funcion de condición.
+
+    function condicion(prom) {
+      if (prom < 30) return 'Inhabilitado por Proceso';
+      if (prom < 60) return 'A Examen Extraordinario';
+      return 'Aprobado';
+    }
+
+    function bindNotas(pageObj, pageid) {
+      var p1 = Runner.getControl(pageid, 'parcial1');
+      var p2 = Runner.getControl(pageid, 'parcial2');
+      var promedio = Runner.getControl(pageid, 'promedio');
+      var cond = Runner.getControl(pageid, 'condicion');
+      var condManual = false;
+
+      function recalcular() {
+        var a = parseFloat(p1.getValue()) || 0;
+        var b = parseFloat(p2.getValue()) || 0;
+        if (a <= 0 && b <= 0) return;
+
+        var prom = Math.round(((a + b) / 2) * 10) / 10;
+        if (promedio) promedio.setValue(prom);
+        if (cond && !condManual) cond.setValue(condicion(prom));
+      }
+
+      if (cond) {
+        cond.on('change', function () { condManual = true; });
+      }
+      if (p1) p1.on('keyup change', recalcular);
+      if (p2) p2.on('keyup change', recalcular);
+    }
+
+    Runner.pages.PageSettings.addPageEvent(
+      'notas', Runner.pages.constants.PAGE_ADD, 'afterPageReady',
+      function (pageObj, proxy, pageid) {
+        bindNotas(pageObj, pageid);
+      });
+
+    Runner.pages.PageSettings.addPageEvent(
+      'notas', Runner.pages.constants.PAGE_EDIT, 'afterPageReady',
+      function (pageObj, proxy, pageid) {
+        bindNotas(pageObj, pageid);
+      });
+
+Nota:
+  Confirmar los cortes 30/60 con el reglamento academico antes de publicar.
+
+6.6 DASHBOARD, MENÚ Y GRÁFICOS
+--------------------------------------------------------------------------------
+
+6.6.1 Corregir enlaces muertos
+
+Donde:
+  Page Designer -> página del dashboard -> snippet acciones_rapidas
+  (en el .phpr, alrededor de las lineas 40744-41900).
+
+  Botón actual              Enlace actual              Reemplazo
+  ------------------------  -------------------------  -------------------------
+  Gestion Catedras          catedras_list.php          cursos_list.php
+  Control de Cuotas         cuotas_list.php            pagos_list.php?f_tab=pendientes
+  Auditoría Sistema         auditoria_list.php         Crear página o eliminar
+  Consultar Deudas          cuotas_list.php            pagos_list.php?f_tab=vencidos
+  Certificados / Const.     constancias_list.php       Crear página o eliminar
+  Cargar Notas              calificaciones_list.php    notas_list.php
+  Mis Catedras              catedras_list.php          cursos_list.php
+  Calificar Trabajos        entregas_tareas_list.php   tarea_entregas_list.php
+  Mis Calificaciones        calificaciones_list.php    notas_list.php
+  Estado de Cuenta          cuotas_list.php            pagos_list.php?f_tab=pendientes
+
+Regla:
+  Si una página no existe y no se va a crear en el sprint, el botón se elimina.
+  Un dashboard sin ese botón es mejor que un dashboard con un 404.
+
+6.6.2 Jerarquia: 3 acciones primarias + Mas módulos
+
+Donde:
+  Reemplazar el bloque de acciones del dashboard en el snippet.
+
+Ejemplo para Administración:
+
+    echo '<div class="sguass-btn-grid">'
+       . '<a href="pagos_add.php" class="sguass-btn-act ' .
+         'act-highlight-success">Cobro rapido</a>'
+       . '<a href="estudiantes_add.php" class="sguass-btn-act ' .
+         'act-highlight-info">Registrar alumno</a>'
+       . '<a href="inscripciones_add.php" class="sguass-btn-act">' .
+         'Nueva matricula</a>'
+       . '</div>'
+       . '<details class="sguass-more">'
+       . '<summary>Mas modulos</summary>'
+       . '<div class="sguass-btn-grid">'
+       . '<a href="pagos_list.php?f_tab=vencidos" class="sguass-btn-act">' .
+         'Cobros vencidos</a>'
+       . '<a href="notas_list.php" class="sguass-btn-act">Actas y notas</a>'
+       . '<a href="cursos_list.php" class="sguass-btn-act">' .
+         'Cursos / catedras</a>'
+       . '<a href="tarea_entregas_list.php" class="sguass-btn-act">' .
+         'Calificar trabajos</a>'
+       . '<a href="usuarios_list.php" class="sguass-btn-act">' .
+         'Usuarios y roles</a>'
+       . '</div>'
+       . '</details>';
+
+Para los otros roles, aplicar el mismo patron: 3 acciones frecuentes arriba y
+el resto dentro de "Mas módulos".
+
+  Docente:
+    Arriba: Tomar asistencia -> asistencias_add.php
+            Cargar notas -> notas_list.php
+            Publicar tarea -> tareas_add.php
+    Mas:    Mis catedras -> cursos_list.php
+            Calificar trabajos -> tarea_entregas_list.php
+            Comunicados -> avisos_list.php
+
+  Secretaria:
+    Arriba: Cobro rapido -> pagos_add.php
+            Nueva matricula -> inscripciones_add.php
+            Registrar alumno -> estudiantes_add.php
+    Mas:    Cobros vencidos -> pagos_list.php?f_tab=vencidos
+            Asistencias -> asistencias_list.php
+            Certificados -> crear pagina o quitar
+
+  Estudiante:
+    Arriba: Mis calificaciones -> notas_list.php
+            Estado de cuenta -> pagos_list.php?f_tab=pendientes
+            Trabajos y entregas -> tareas_list.php
+    Mas:    Historial academico -> inscripciones_list.php
+            Tablon de avisos -> avisos_list.php
+            Asistencia -> asistencias_list.php
+
+6.6.3 KPIs accionables
+
+Donde:
+  Snippet del dashboard, bloques sguass-kpi-card.
+
+Cambiar:
+
+    <div class="sguass-kpi-card kpi-danger">
+      <div class="sguass-kpi-lbl">Pendiente y Vencido</div>
+      <div class="sguass-kpi-num">Gs. ...</div>
+      <div class="sguass-kpi-sub">... cuotas por cobrar</div>
+    </div>
+
+Por:
+
+    <a class="sguass-kpi-card kpi-danger"
+       href="pagos_list.php?f_tab=vencidos"
+       aria-label="Ver cuotas pendientes y vencidas">
+      <div class="sguass-kpi-lbl">Pendiente y Vencido</div>
+      <div class="sguass-kpi-num">Gs. ...</div>
+      <div class="sguass-kpi-sub">... cuotas por cobrar</div>
+    </a>
+
+Hacer lo mismo con:
+
+    Alumnos activos    -> estudiantes_list.php
+    Docentes activos   -> profesores_list.php
+    Recaudacion total  -> pagos_list.php?f_tab=pagados
+
+6.6.4 ECharts local y fallback
+
+Donde:
+  Descargar echarts.min.js y subirlo desde PHPRunner -> Files a
+  styles/custom/echarts.min.js. Luego reemplazar el script del CDN por:
+
+    <script src="styles/custom/echarts.min.js"></script>
+
+Si no se puede empaquetar localmente, al menos agregar verificación y mensaje:
+
+    (function () {
+      function initCharts() {
+        if (typeof echarts === 'undefined') {
+          $('.sguass-chart-box').each(function () {
+            $(this).html(
+              '<div class="alert alert-warning" role="status">' +
+              'No se pudo cargar el grafico. Los datos estan disponibles ' +
+              'en las listas del sistema.' +
+              '</div>'
+            );
+          });
+          return;
+        }
+
+        // Codigo existente de echarts.init(...)
+        // Añadir a cada option:
+        // option.aria = { enabled: true, decal: { show: true } };
+      }
+
+      if (document.readyState === 'complete') initCharts();
+      else window.addEventListener('load', initCharts);
+    })();
+
+Ademas, agregar role="img" y aria-label a cada contenedor:
+
+    <div id="chart_admin_1" class="sguass-chart-box" role="img"
+         aria-label="Distribucion de alumnos por carrera. Los datos tambien
+         estan en la lista de estudiantes."></div>
+
+6.6.5 Menu "Area Admin"
+
+Donde:
+  Menu -> editar el item "Area Admin".
+
+  - Si el objetivo es el inicio de administración: enlazar a
+    admin_members_list.php o a una página de inicio admin.
+  - Si el objetivo es permisos: cambiar el texto a "Permisos" y mantener
+    admin_rights_list.php.
+
+6.6.6 Nota tecnica sobre Bootstrap
+
+  El dashboard usa variables --bs-* (Bootstrap 5) dentro de una aplicacion
+  Bootstrap 3. Funciona solo por los valores de fallback. En las nuevas reglas,
+  usar valores explicitos o variables propias --sguass-*; no depender de --bs-*.
+
+6.7 MASTER-DETAILS
+--------------------------------------------------------------------------------
+
+Donde:
+  Page Designer -> página masterlist (por ejemplo carreras_masterlist) ->
+  encabezado y botón "Regresar".
+
+Reemplazar el enlace btn-link btn-xs por un breadcrumb y un botón de 44 px:
+
+    <nav aria-label="Ruta de navegacion" class="sguass-breadcrumb">
+      <a href="carreras_list.php">Carreras</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Materias de la carrera</span>
+    </nav>
+
+    <a class="btn btn-default sguass-back" href="carreras_list.php">
+      Volver a carreras
+    </a>
+
+CSS:
+
+    .sguass-breadcrumb{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:0 0 12px;
+      font-size:.95rem;
+    }
+    .sguass-breadcrumb a{color:var(--sguass-link);}
+    .sguass-back{
+      min-height:44px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+Si el masterlist muestra el nombre del maestro en el encabezado, usarlo:
+"Materias de [Nombre de la carrera]". Si no, agregarlo con el campo
+correspondiente.
+
+6.8 LOADING
+--------------------------------------------------------------------------------
+
+Donde:
+  PHPRunner -> Templates -> loadindicator.htm (si el build lo permite). Si no,
+  usar el editor de templates de la instalacion.
+
+Cambiar el texto:
+
+    <span class="text">Cargando...</span>
+
+Reemplazar el script de ocultamiento fijo por:
+
+    <script>
+    (function () {
+      var el = document.getElementById('loading');
+      if (!el) return;
+
+      el.className = 'load_go';
+
+      function hide() {
+        el.className = 'load_hide';
+      }
+
+      if (document.readyState === 'complete') {
+        hide();
+      } else {
+        window.addEventListener('load', hide);
+      }
+
+      // Failsafe: nunca dejar el overlay bloqueando la pantalla.
+      setTimeout(hide, 15000);
+    })();
+    </script>
+
+Agregar al contenedor:
+
+    <div class="load_hide" id="loading" role="status" aria-live="polite"
+         aria-label="Cargando aplicacion">
+
+Resultado:
+  El overlay dura lo que dura la carga real, no 1500 ms fijos, y el texto esta
+  en espanol.
+
+6.9 MODAL DE CALIFICACIONES
+--------------------------------------------------------------------------------
+
+Donde:
+  Snippet del dashboard, bloque sheetModalHtml (SGUASS.phpr:42255-42300).
+
+Cambios minimos:
+
+    <div class="modal fade" id="..." tabindex="-1" role="dialog"
+         aria-modal="true" aria-labelledby="planillaTitle">
+      <div class="modal-dialog" style="width:96%; max-width:1300px;"
+           role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background:#2c3e50; color:#fff;">
+            <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Cerrar" title="Cerrar">&times;</button>
+            <h4 class="modal-title" id="planillaTitle">
+              <i class="fa fa-table" aria-hidden="true"></i>
+              Planilla de Calificaciones y Habilitacion por Caja (Res. 24/18)
+            </h4>
+          </div>
+          <div class="modal-body" style="padding:10px; max-height:75vh;
+               overflow-y:auto;">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover table-condensed"
+                     id="tbl_planilla_bulk" style="margin-bottom:0;">
+                <!-- ... -->
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Cerrar</button>
+            <button type="button" id="btn_guardar_planilla_bulk"
+                    class="btn btn-success">
+              <i class="fa fa-save" aria-hidden="true"></i>
+              Guardar calificaciones
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+CSS adicional para la planilla:
+
+    #tbl_planilla_bulk thead th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:#34495e;
+      color:#fff;
+    }
+    #tbl_planilla_bulk td:first-child,
+    #tbl_planilla_bulk th:first-child{
+      position:sticky;
+      left:0;
+      background:#fff;
+      z-index:1;
+    }
+    #tbl_planilla_bulk td:first-child{background:#f8f9fa;}
+
+El JS global de 6.2 ya agrega aria-modal, aria-labelledby, aria-label al cierre,
+envuelve la tabla y maneja el foco. Si prefieres no depender del JS, deja los
+atributos directamente en el HTML.
+
+6.10 CHECKLIST DE VERIFICACIÓN
+--------------------------------------------------------------------------------
+
+Navegación
+  [ ] Todos los enlaces del dashboard abren una página existente.
+  [ ] No hay botones que prometan módulos inexistentes.
+  [ ] "Area Admin" lleva a donde dice su etiqueta.
+
+Contraste y legibilidad
+  [ ] axe DevTools o WAVE no reportan violaciones serias de contraste.
+  [ ] Los labels del dashboard se leen a 320 px de ancho.
+  [ ] Los badges warning tienen texto oscuro sobre ambar.
+
+Táctil y móvil
+  [ ] Editar/Ver/Eliminar tienen al menos 44x44 px y 8 px de separacion.
+  [ ] La tabla y el modal se desplazan horizontalmente sin romper la página.
+  [ ] El modal de calificaciones se usa a 360 px de ancho.
+
+Teclado y lector de pantalla
+  [ ] Tab recorre todos los controles; el foco es visible.
+  [ ] El input de busqueda tiene nombre accesible.
+  [ ] Los botones icon-only tienen aria-label.
+  [ ] El modal anuncia su título y atrapa el foco; Esc cierra.
+  [ ] Los mensajes de error se anuncian con role="alert" o aria-live.
+
+Formularios
+  [ ] Guardar con campos obligatorios vacios muestra error inline.
+  [ ] Una cédula invalida no se guarda y explica el formato.
+  [ ] Los help text tienen <=80 caracteres.
+  [ ] Alta no muestra "Ver/Editar" antes de guardar.
+
+Feedback
+  [ ] No hay alert() nativo en el dashboard.
+  [ ] El loading dice "Cargando..." y desaparece cuando la página termina.
+  [ ] Si se bloquea el CDN, los gráficos muestran un mensaje, no una caja vacía.
+  [ ] La mora automatica avisa y se puede editar.
+
+Consistencia
+  [ ] "Eliminar seleccionados" reemplaza "Borrar articulos seleccionados".
+  [ ] "Usuario o correo" reemplaza "Email".
+  [ ] "Inhabilitado por Proceso" / "A Examen Extraordinario" / "Aprobado"
+      se usan igual en notas y dashboard.
+  [ ] "Estudiantes", "Profesores", "Inscripciones" y "Catedras" se escriben
+      con tilde y de forma uniforme.
+
+
+================================================================================
+7. ANEXOS
+================================================================================
+
+ANEXO A. GLOSARIO DE TÉRMINOS
+--------------------------------------------------------------------------------
+
+  Término actual                  Término recomendado
+  ------------------------------  ------------------------------------------
+  Email                           Usuario o correo electronico
+  Borrar articulos seleccionados  Eliminar seleccionados
+  Añadir nuevo                    Nuevo estudiante
+  Padron Alumnos                  Estudiantes
+  Nomina Docentes                 Profesores
+  Matriculas                      Inscripciones
+  Catedras                        Catedras (con tilde)
+  Cobrados / Al Día               Pagado
+  Reprobado (notas)               Inhabilitado por Proceso / A Examen
+                                  Extraordinario / Aprobado
+  Area Admin                      Administración / Permisos
+
+Regla:
+  Un concepto = una palabra en toda la aplicacion. No usar sinonimos para el
+  mismo objeto en pantallas distintas.
+
+ANEXO B. MAPEO DE ENLACES DEL DASHBOARD
+--------------------------------------------------------------------------------
+
+  Enlace actual              Existe?  Alternativa
+  -------------------------  --------  --------------------------------------
+  estudiantes_list.php       Si        -
+  profesores_list.php        Si        -
+  inscripciones_list.php     Si        -
+  pagos_list.php             Si        -
+  usuarios_list.php          Si        -
+  avisos_list.php            Si        -
+  asistencias_list.php       Si        -
+  tareas_list.php            Si        -
+  tarea_entregas_list.php    Si        -
+  cursos_list.php            Si        -
+  materias_list.php          Si        -
+  notas_list.php             Si        -
+  catedras_list.php          No        cursos_list.php / materias_list.php
+  cuotas_list.php            No        pagos_list.php?f_tab=pendientes
+  auditoria_list.php         No        Crear página o eliminar botón
+  calificaciones_list.php    No        notas_list.php
+  constancias_list.php       No        Crear página o eliminar botón
+  entregas_tareas_list.php   No        tarea_entregas_list.php
+
+ANEXO C. CAMPOS, AYUDAS Y VALIDACIONES
+--------------------------------------------------------------------------------
+
+  Campo           Tipo        Required  Ayuda / validacion
+  --------------  ----------  --------  --------------------------------------
+  numero_cedula   texto       Si        Solo numeros y guion. Ej.: 1234567-8.
+                                        Regex ^\d{6,8}(-\d)?$; max 10.
+  fecha_ingreso   fecha       Si        Fecha de alta del estudiante.
+                                        No permitir fechas futuras.
+  usuario_id      select      Si        Usuario del sistema asociado.
+  carrera_id      select      Si        Carrera en la que se inscribe.
+  matricula       texto       Si        Código único de matricula.
+  monto           moneda      Si        Formatear en blur, no en cada tecla.
+  multa_mora      moneda      No        Calcular 2% por cada 30 días; avisar.
+  parcial1        número      Si        0-15; recalcular promedio.
+  parcial2        número      Si        0-15; recalcular promedio.
+  promedio        número      Auto      Calcular (p1+p2)/2.
+  condición       texto       Auto      <30 Inhabilitado; 30-59 A Examen;
+                                        >=60 Aprobado.
+
+ANEXO D. ÍNDICE DE EVIDENCIA POR ARCHIVO
+--------------------------------------------------------------------------------
+
+  SGUASS.phpr
+    40744-41900  Snippet acciones_rapidas y dashboard.
+    40841        ECharts desde CDN.
+    40908-40923  Tipografia y colores del dashboard.
+    40971        Botones de accion.
+    41091-41112  KPIs.
+    41117-41126  Acciones rápidas Admin.
+    41121-41125  Enlaces muertos Admin.
+    41158-41160  Inicializacion de gráficos.
+    41302-41307  Acciones Secretaria.
+    41305-41307  Enlaces muertos Secretaria.
+    41499-41504  Acciones Docente.
+    41500-41503  Enlaces muertos Docente.
+    41692-41697  Acciones Estudiante.
+    41692-41694  Enlaces muertos Estudiante.
+    42132-46302  Llamadas alert().
+    42234-42244  Inputs del modal de calificaciones.
+    42255-42300  HTML del modal.
+    11626        numero_cedula con m_bRequired=0.
+
+  templates/estudiantes_list.htm
+    114, 401     Borrado masivo.
+    165-178      Busqueda simple.
+    391-393      Botón Añadir nuevo.
+    760-784      Acciones de fila.
+
+  templates/estudiantes_add.htm
+    67-73        Acciones superiores.
+    127-219      Tooltips vacios.
+    248-265      Acciones inferiores.
+
+  templates/estudiantes_view.htm
+    204-228      Acciones de Vista y hamburguesa.
+
+  templates/.global_login.htm
+    81-82        Label Email.
+    94           Input username.
+    109-122      Input password.
+    177-186      Botones Aceptar/Continuar.
+
+  templates/.global_menu.htm
+    72-74        Area Admin.
+
+  templates/carreras_masterlist.htm
+    14-19        Regresar y encabezado generico.
+
+  templates/loadindicator.htm
+    48           Texto Loading.
+    67           Timeout fijo 1500 ms.
+
+  styles/pages/estudiantes_list.css
+    2-27         nowrap y width 30px.
+
+  styles/pages/pagos_list.css
+    2-48         nowrap y width 30px.
+
+  include/runnerJS/events/pageevents_carreras.js
+    2-6          Formato monetario en input/keyup.
+
+  include/runnerJS/events/pageevents_pagos.js
+    2-4          Mora automatica.
+
+  include/runnerJS/events/pageevents_notas.js
+    2-3          Condición de notas.
+
+  styles/bootstrap/flatly/css/bootstrap-theme.min.css
+    a, .label-warning, .text-muted, .btn-success
+                 Colores de contraste insuficiente.
+
+  classes/pdlayout.php
+    39-42        Orden de carga: custom.css antes de page.css.
+
+  classes/layout.php
+    70-88        Carga de Bootstrap y custom.css.
+
+
+================================================================================
+FIN DEL INFORME
+================================================================================
+
+No se modificaron archivos fuente del proyecto. Este TXT es el único archivo
+generado por la auditoría. Las correcciones propuestas se aplican desde la UI de
+PHPRunner 10.0 y deben validarse en staging antes de publicar en producción.

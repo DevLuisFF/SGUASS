@@ -1,0 +1,483 @@
+<!doctype html>
+<html  {$html_attrs}>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>{$pagetitle}</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link REL="stylesheet" href="styles/default.css" type="text/css">
+		{BEGIN rtlCSS}
+		<link REL="stylesheet" href="styles/defaultRTL.css" type="text/css">
+		{END rtlCSS}
+		{BEGIN styleCSSFiles}
+		<link REL="stylesheet" href="{$stylepath}" type="text/css">
+		{END styleCSSFiles}
+	</head>
+
+	<body class="{$stylename} function-search" {$bodyattrs}>
+	{BEGIN body}
+		{$header}
+		<style>
+			{$containerCss}
+		</style>
+		
+		<div class="container r-small-page" 
+			data-body-align="center"
+			data-body-width="standard"
+		>
+							{BEGIN top_block}
+<div class="r-form" data-location="top" id="form_top_{$pageid}" data-makeup="small" {$form_top} data-pageid="{$pageid}"
+		data-v-width="6"
+	data-v-margin="1"
+	
+>		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="top_c1" data-pageid="{$pageid}"	{$cell_top_c1}
+	class=" r-ori-vert			col-md-12
+	">
+	 
+		<h2 data-itemtype="search_header" data-itemid="search_header" {$item_search_header} data-pageid="{$pageid}" >{$pagetitlelabel pagos search}</h2>
+	</div>					</div>
+	</div>		
+{END top_block}
+									{BEGIN above-grid_block}
+<div class="r-form" data-location="above-grid" id="form_above-grid_{$pageid}" data-makeup="small" {$form_above-grid} data-pageid="{$pageid}"
+		data-v-width="6"
+	data-v-margin="1"
+	
+>		
+	</div>		
+{END above-grid_block}
+									{BEGIN grid_block}
+
+
+
+
+ 
+	 
+												<table 
+	data-body-align="center"
+	data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" 
+	class="r-edit-form" cellpadding="0" cellspacing="0" 
+	{$grid_hiddenattr} 
+		data-form-width="1"
+		
+		data-v-width="6"
+	>
+	<tbody>
+										<tr>
+										
+
+{BEGIN cellblock_grid_c3}
+<td
+	{$cell_grid_c3}
+	class=" r-ori-vert"
+	
+				data-fullwidth
+		
+			data-cellId="grid_c3" data-pageid="{$pageid}"
+		data-v-cell="6"
+		
+>
+	<div edit-form-cell class="clearfix">
+				
+{BEGIN id_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="id" 
+	
+	data-signal-error-for="id{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="id" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_id}">
+		{$label pagos id }	</label>
+	<div class="r-search-option">
+		{$searchtype_id}
+	</div>
+	<div class="r-search-field">
+		{$id_editcontrol}	</div>
+	<div class="r-search-field">
+		{$id_editcontrol1}
+	</div>
+	
+</div>
+
+{END id_fieldblock}
+											
+{BEGIN estudiante_id_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_estudiante_id}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="estudiante_id" 
+	
+	data-signal-error-for="estudiante_id{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="estudiante_id" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_estudiante_id}">
+		{$label pagos estudiante_id }	</label>
+	<div class="r-search-option">
+		{$searchtype_estudiante_id}
+	</div>
+	<div class="r-search-field">
+		{$estudiante_id_editcontrol}	</div>
+	<div class="r-search-field">
+		{$estudiante_id_editcontrol1}
+	</div>
+	
+</div>
+
+{END estudiante_id_fieldblock}
+											
+{BEGIN periodo_id_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_periodo_id}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="periodo_id" 
+	
+	data-signal-error-for="periodo_id{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field2" {$item_integrated_search_field2} data-pageid="{$pageid}" data-field="periodo_id" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_periodo_id}">
+		{$label pagos periodo_id }	</label>
+	<div class="r-search-option">
+		{$searchtype_periodo_id}
+	</div>
+	<div class="r-search-field">
+		{$periodo_id_editcontrol}	</div>
+	<div class="r-search-field">
+		{$periodo_id_editcontrol1}
+	</div>
+	
+</div>
+
+{END periodo_id_fieldblock}
+											
+{BEGIN concepto_id_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_concepto_id}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="concepto_id" 
+	
+	data-signal-error-for="concepto_id{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field3" {$item_integrated_search_field3} data-pageid="{$pageid}" data-field="concepto_id" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_concepto_id}">
+		{$label pagos concepto_id }	</label>
+	<div class="r-search-option">
+		{$searchtype_concepto_id}
+	</div>
+	<div class="r-search-field">
+		{$concepto_id_editcontrol}	</div>
+	<div class="r-search-field">
+		{$concepto_id_editcontrol1}
+	</div>
+	
+</div>
+
+{END concepto_id_fieldblock}
+											
+{BEGIN nro_cuota_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_nro_cuota}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="nro_cuota" 
+	
+	data-signal-error-for="nro_cuota{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field4" {$item_integrated_search_field4} data-pageid="{$pageid}" data-field="nro_cuota" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_nro_cuota}">
+		{$label pagos nro_cuota }	</label>
+	<div class="r-search-option">
+		{$searchtype_nro_cuota}
+	</div>
+	<div class="r-search-field">
+		{$nro_cuota_editcontrol}	</div>
+	<div class="r-search-field">
+		{$nro_cuota_editcontrol1}
+	</div>
+	
+</div>
+
+{END nro_cuota_fieldblock}
+											
+{BEGIN monto_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_monto}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="monto" 
+	
+	data-signal-error-for="monto{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field5" {$item_integrated_search_field5} data-pageid="{$pageid}" data-field="monto" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_monto}">
+		{$label pagos monto }	</label>
+	<div class="r-search-option">
+		{$searchtype_monto}
+	</div>
+	<div class="r-search-field">
+		{$monto_editcontrol}	</div>
+	<div class="r-search-field">
+		{$monto_editcontrol1}
+	</div>
+	
+</div>
+
+{END monto_fieldblock}
+											
+{BEGIN descuento_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_descuento}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="descuento" 
+	
+	data-signal-error-for="descuento{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field6" {$item_integrated_search_field6} data-pageid="{$pageid}" data-field="descuento" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_descuento}">
+		{$label pagos descuento }	</label>
+	<div class="r-search-option">
+		{$searchtype_descuento}
+	</div>
+	<div class="r-search-field">
+		{$descuento_editcontrol}	</div>
+	<div class="r-search-field">
+		{$descuento_editcontrol1}
+	</div>
+	
+</div>
+
+{END descuento_fieldblock}
+											
+{BEGIN multa_mora_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_multa_mora}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="multa_mora" 
+	
+	data-signal-error-for="multa_mora{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field7" {$item_integrated_search_field7} data-pageid="{$pageid}" data-field="multa_mora" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_multa_mora}">
+		{$label pagos multa_mora }	</label>
+	<div class="r-search-option">
+		{$searchtype_multa_mora}
+	</div>
+	<div class="r-search-field">
+		{$multa_mora_editcontrol}	</div>
+	<div class="r-search-field">
+		{$multa_mora_editcontrol1}
+	</div>
+	
+</div>
+
+{END multa_mora_fieldblock}
+											
+{BEGIN fecha_vencimiento_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_fecha_vencimiento}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="fecha_vencimiento" 
+	
+	data-signal-error-for="fecha_vencimiento{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field8" {$item_integrated_search_field8} data-pageid="{$pageid}" data-field="fecha_vencimiento" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_fecha_vencimiento}">
+		{$label pagos fecha_vencimiento }	</label>
+	<div class="r-search-option">
+		{$searchtype_fecha_vencimiento}
+	</div>
+	<div class="r-search-field">
+		{$fecha_vencimiento_editcontrol}	</div>
+	<div class="r-search-field">
+		{$fecha_vencimiento_editcontrol1}
+	</div>
+	
+</div>
+
+{END fecha_vencimiento_fieldblock}
+											
+{BEGIN fecha_pago_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_fecha_pago}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="fecha_pago" 
+	
+	data-signal-error-for="fecha_pago{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field9" {$item_integrated_search_field9} data-pageid="{$pageid}" data-field="fecha_pago" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_fecha_pago}">
+		{$label pagos fecha_pago }	</label>
+	<div class="r-search-option">
+		{$searchtype_fecha_pago}
+	</div>
+	<div class="r-search-field">
+		{$fecha_pago_editcontrol}	</div>
+	<div class="r-search-field">
+		{$fecha_pago_editcontrol1}
+	</div>
+	
+</div>
+
+{END fecha_pago_fieldblock}
+											
+{BEGIN metodo_pago_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_metodo_pago}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="metodo_pago" 
+	
+	data-signal-error-for="metodo_pago{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field10" {$item_integrated_search_field10} data-pageid="{$pageid}" data-field="metodo_pago" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_metodo_pago}">
+		{$label pagos metodo_pago }	</label>
+	<div class="r-search-option">
+		{$searchtype_metodo_pago}
+	</div>
+	<div class="r-search-field">
+		{$metodo_pago_editcontrol}	</div>
+	<div class="r-search-field">
+		{$metodo_pago_editcontrol1}
+	</div>
+	
+</div>
+
+{END metodo_pago_fieldblock}
+											
+{BEGIN nro_comprobante_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_nro_comprobante}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="nro_comprobante" 
+	
+	data-signal-error-for="nro_comprobante{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field11" {$item_integrated_search_field11} data-pageid="{$pageid}" data-field="nro_comprobante" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_nro_comprobante}">
+		{$label pagos nro_comprobante }	</label>
+	<div class="r-search-option">
+		{$searchtype_nro_comprobante}
+	</div>
+	<div class="r-search-field">
+		{$nro_comprobante_editcontrol}	</div>
+	<div class="r-search-field">
+		{$nro_comprobante_editcontrol1}
+	</div>
+	
+</div>
+
+{END nro_comprobante_fieldblock}
+											
+{BEGIN estado_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_estado}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="estado" 
+	
+	data-signal-error-for="estado{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field12" {$item_integrated_search_field12} data-pageid="{$pageid}" data-field="estado" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_estado}">
+		{$label pagos estado }	</label>
+	<div class="r-search-option">
+		{$searchtype_estado}
+	</div>
+	<div class="r-search-field">
+		{$estado_editcontrol}	</div>
+	<div class="r-search-field">
+		{$estado_editcontrol1}
+	</div>
+	
+</div>
+
+{END estado_fieldblock}
+											
+{BEGIN matricula_semestre_id_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_matricula_semestre_id}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="matricula_semestre_id" 
+	
+	data-signal-error-for="matricula_semestre_id{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field13" {$item_integrated_search_field13} data-pageid="{$pageid}" data-field="matricula_semestre_id" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_matricula_semestre_id}">
+		{$label pagos matricula_semestre_id }	</label>
+	<div class="r-search-option">
+		{$searchtype_matricula_semestre_id}
+	</div>
+	<div class="r-search-field">
+		{$matricula_semestre_id_editcontrol}	</div>
+	<div class="r-search-field">
+		{$matricula_semestre_id_editcontrol1}
+	</div>
+	
+</div>
+
+{END matricula_semestre_id_fieldblock}
+	
+								</td>
+			{END cellblock_grid_c3}
+								</tr>
+			</tbody></table>
+{END grid_block}
+									{BEGIN below-grid_block}
+<div class="r-form" data-location="below-grid" id="form_below-grid_{$pageid}" data-makeup="small" {$form_below-grid} data-pageid="{$pageid}"
+		data-v-width="6"
+	data-v-margin="1"
+	
+>		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="below-grid_c1" data-pageid="{$pageid}"	{$cell_below-grid_c1}
+	class="			col-md-12
+	">
+	 
+		<span data-itemtype="search_search" data-itemid="search_search" {$item_search_search} data-pageid="{$pageid}" data-button-item>
+	<a type="button" class="btn btn-primary   
+	" {$searchbutton_attrs} >
+							Buscar			</a>
+</span>
+	 
+		<span data-itemtype="search_reset" data-itemid="search_reset" {$item_search_reset} data-pageid="{$pageid}" data-button-item>
+	<a type="button" class="btn btn-default   
+	" {$resetbutton_attrs} >
+							Reiniciar			</a>
+</span>
+	 
+		{BEGIN back_button}
+<span data-itemtype="search_back_list" data-itemid="search_back_list" {$item_search_back_list} data-pageid="{$pageid}" data-button-item>
+	<a type="button" class="btn btn-default   
+	" {$backbutton_attrs} >
+							Volver a la lista			</a>
+</span>
+{END back_button}
+	</div>					</div>
+	</div>		
+{END below-grid_block}
+			</div>
+		{$footer}
+	{END body}
+	</body>
+</html>

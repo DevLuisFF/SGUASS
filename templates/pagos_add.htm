@@ -1,0 +1,571 @@
+<!doctype html>
+<html  {$html_attrs}>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>{$pagetitle}</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link REL="stylesheet" href="styles/default.css" type="text/css">
+		{BEGIN rtlCSS}
+		<link REL="stylesheet" href="styles/defaultRTL.css" type="text/css">
+		{END rtlCSS}
+		{BEGIN styleCSSFiles}
+		<link REL="stylesheet" href="{$stylepath}" type="text/css">
+		{END styleCSSFiles}
+	</head>
+
+	<body class="{$stylename} function-add" {$bodyattrs}>
+	{BEGIN body}
+		{$header}
+		<style>
+			{$containerCss}
+		</style>
+		
+		<div class="container r-small-page" 
+			data-body-align="center"
+			data-body-width="standard"
+		>
+							{BEGIN top_block}
+<div class="r-form" data-location="top" id="form_top_{$pageid}" data-makeup="small" {$form_top} data-pageid="{$pageid}"
+		data-v-width="2"
+	data-v-margin="0"
+	
+>		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="top_c1" data-pageid="{$pageid}"	{$cell_top_c1}
+	class=" r-ori-vert			col-md-12
+	">
+	 
+		<h2 data-itemtype="add_header" data-itemid="add_header" {$item_add_header} data-pageid="{$pageid}" >{$pagetitlelabel pagos add}</h2>
+	</div>					</div>
+	</div>		
+{END top_block}
+									{BEGIN above-grid_block}
+<div class="r-form" data-location="above-grid" id="form_above-grid_{$pageid}" data-makeup="small" {$form_above-grid} data-pageid="{$pageid}"
+		data-v-width="2"
+	data-v-margin="0"
+	
+>		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="above-grid_c1" data-pageid="{$pageid}"	{$cell_above-grid_c1}
+	class=" r-ori-vert			col-md-12
+	">
+	 
+		{BEGIN message_block}
+<div data-itemtype="add_message" data-itemid="add_message" {$item_add_message} data-pageid="{$pageid}" class="alert {$message_class}" role="alert">
+<h5>{$message}</h5>
+<div>
+{BEGIN back_button}
+		
+	<button class="btn btn-sm btn-default" {$backbutton_attrs}>Volver a la lista</button>
+	{END back_button}
+{BEGIN view_page_button}
+	<button class="btn btn-sm btn-default" {$view_page_button_attrs}>Ver</button>
+{END view_page_button}
+{BEGIN edit_page_button}
+	<button class="btn btn-sm btn-default" {$edit_page_button_attrs}>Editar</button>
+{END edit_page_button}
+</div>
+</div>
+{END message_block}	</div>					</div>
+	</div>		
+{END above-grid_block}
+									{BEGIN grid_block}
+
+
+
+
+ 
+	 
+												<div class="panel with-tabs panel-default form-tabs" data-itemtype="tabs" data-itemid="tabs" {$item_tabs} data-pageid="{$pageid}">
+	<div class="panel-heading">
+		<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation" class="active">
+				<a aria-controls="settings" role="tab" data-toggle="tab" href="#tab_section{$pageid}">
+					Concepto y Periodo				</a>
+			</li>
+										<li role="presentation" class="">
+				<a aria-controls="settings" role="tab" data-toggle="tab" href="#tab_section1{$pageid}">
+					Importes y Aranceles				</a>
+			</li>
+										<li role="presentation" class="">
+				<a aria-controls="settings" role="tab" data-toggle="tab" href="#tab_section2{$pageid}">
+					Liquidación y Cobro				</a>
+			</li>
+									</ul>
+	</div>
+	<div class="panel-body">
+		<div class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="tab_section{$pageid}"> 
+			{BEGIN section_block}
+
+
+
+
+ 
+	 
+												<table 
+	data-body-align="center"
+	data-location="section" id="form_section_{$pageid}" data-makeup="small" {$form_section} data-pageid="{$pageid}" 
+	class="r-edit-form" cellpadding="0" cellspacing="0" 
+	{$grid_hiddenattr} 
+		data-form-width="1"
+		
+		data-v-width="4"
+	>
+	<tbody>
+										<tr>
+										
+
+{BEGIN cellblock_section_c1}
+<td
+	{$cell_section_c1}
+	class=" r-ori-vert"
+	
+				data-fullwidth
+		
+			data-cellId="section_c1" data-pageid="{$pageid}"
+		data-v-cell="4"
+		
+>
+	<div edit-form-cell class="clearfix">
+				
+{BEGIN estudiante_id_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_estudiante_id}  r-vertical-field" 
+	data-fieldname="estudiante_id" 
+	data-signal-error-for="estudiante_id{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="estudiante_id" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_estudiante_id}">
+		{BEGIN estudiante_id_label}{$label pagos estudiante_id }{END estudiante_id_label}
+	</label>
+	<div class="r-edit-field">
+		{$estudiante_id_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="estudiante_id">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END estudiante_id_fieldblock}
+											
+{BEGIN matricula_semestre_id_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_matricula_semestre_id}  r-vertical-field" 
+	data-fieldname="matricula_semestre_id" 
+	data-signal-error-for="matricula_semestre_id{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field12" {$item_integrated_edit_field12} data-pageid="{$pageid}" data-field="matricula_semestre_id" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_matricula_semestre_id}">
+		{BEGIN matricula_semestre_id_label}{$label pagos matricula_semestre_id }{END matricula_semestre_id_label}
+	</label>
+	<div class="r-edit-field">
+		{$matricula_semestre_id_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="matricula_semestre_id">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END matricula_semestre_id_fieldblock}
+											
+{BEGIN periodo_id_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_periodo_id}  r-vertical-field" 
+	data-fieldname="periodo_id" 
+	data-signal-error-for="periodo_id{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="periodo_id" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_periodo_id}">
+		{BEGIN periodo_id_label}{$label pagos periodo_id }{END periodo_id_label}
+	</label>
+	<div class="r-edit-field">
+		{$periodo_id_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="periodo_id">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END periodo_id_fieldblock}
+											
+{BEGIN concepto_id_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_concepto_id}  r-vertical-field" 
+	data-fieldname="concepto_id" 
+	data-signal-error-for="concepto_id{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="concepto_id" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_concepto_id}">
+		{BEGIN concepto_id_label}{$label pagos concepto_id }{END concepto_id_label}
+	</label>
+	<div class="r-edit-field">
+		{$concepto_id_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="concepto_id">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END concepto_id_fieldblock}
+											
+{BEGIN nro_cuota_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_nro_cuota}  r-vertical-field" 
+	data-fieldname="nro_cuota" 
+	data-signal-error-for="nro_cuota{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="nro_cuota" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_nro_cuota}">
+		{BEGIN nro_cuota_label}{$label pagos nro_cuota }{END nro_cuota_label}
+	</label>
+	<div class="r-edit-field">
+		{$nro_cuota_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="nro_cuota">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END nro_cuota_fieldblock}
+											
+{BEGIN fecha_vencimiento_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_fecha_vencimiento}  r-vertical-field" 
+	data-fieldname="fecha_vencimiento" 
+	data-signal-error-for="fecha_vencimiento{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field7" {$item_integrated_edit_field7} data-pageid="{$pageid}" data-field="fecha_vencimiento" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_fecha_vencimiento}">
+		{BEGIN fecha_vencimiento_label}{$label pagos fecha_vencimiento }{END fecha_vencimiento_label}
+	</label>
+	<div class="r-edit-field">
+		{$fecha_vencimiento_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="fecha_vencimiento">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END fecha_vencimiento_fieldblock}
+	
+								</td>
+			{END cellblock_section_c1}
+								</tr>
+			</tbody></table>
+{END section_block}
+						</div>
+					<div role="tabpanel" class="tab-pane " id="tab_section1{$pageid}"> 
+			{BEGIN section1_block}
+
+
+
+
+ 
+	 
+												<table 
+	data-body-align="center"
+	data-location="section1" id="form_section1_{$pageid}" data-makeup="small" {$form_section1} data-pageid="{$pageid}" 
+	class="r-edit-form" cellpadding="0" cellspacing="0" 
+	{$grid_hiddenattr} 
+		data-form-width="1"
+		
+		data-v-width="4"
+	>
+	<tbody>
+										<tr>
+										
+
+{BEGIN cellblock_section1_c1}
+<td
+	{$cell_section1_c1}
+	class=" r-ori-vert"
+	
+				data-fullwidth
+		
+			data-cellId="section1_c1" data-pageid="{$pageid}"
+		data-v-cell="4"
+		
+>
+	<div edit-form-cell class="clearfix">
+				
+{BEGIN monto_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_monto}  r-vertical-field" 
+	data-fieldname="monto" 
+	data-signal-error-for="monto{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field4" {$item_integrated_edit_field4} data-pageid="{$pageid}" data-field="monto" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_monto}">
+		{BEGIN monto_label}{$label pagos monto }{END monto_label}
+	</label>
+	<div class="r-edit-field">
+		{$monto_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="monto">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END monto_fieldblock}
+											
+{BEGIN descuento_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_descuento}  r-vertical-field" 
+	data-fieldname="descuento" 
+	data-signal-error-for="descuento{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field5" {$item_integrated_edit_field5} data-pageid="{$pageid}" data-field="descuento" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_descuento}">
+		{BEGIN descuento_label}{$label pagos descuento }{END descuento_label}
+	</label>
+	<div class="r-edit-field">
+		{$descuento_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="descuento">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END descuento_fieldblock}
+											
+{BEGIN multa_mora_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_multa_mora}  r-vertical-field" 
+	data-fieldname="multa_mora" 
+	data-signal-error-for="multa_mora{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field6" {$item_integrated_edit_field6} data-pageid="{$pageid}" data-field="multa_mora" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_multa_mora}">
+		{BEGIN multa_mora_label}{$label pagos multa_mora }{END multa_mora_label}
+	</label>
+	<div class="r-edit-field">
+		{$multa_mora_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="multa_mora">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END multa_mora_fieldblock}
+	
+								</td>
+			{END cellblock_section1_c1}
+								</tr>
+			</tbody></table>
+{END section1_block}
+						</div>
+					<div role="tabpanel" class="tab-pane " id="tab_section2{$pageid}"> 
+			{BEGIN section2_block}
+
+
+
+
+ 
+	 
+												<table 
+	data-body-align="center"
+	data-location="section2" id="form_section2_{$pageid}" data-makeup="small" {$form_section2} data-pageid="{$pageid}" 
+	class="r-edit-form" cellpadding="0" cellspacing="0" 
+	{$grid_hiddenattr} 
+		data-form-width="1"
+		
+		data-v-width="4"
+	>
+	<tbody>
+										<tr>
+										
+
+{BEGIN cellblock_section2_c1}
+<td
+	{$cell_section2_c1}
+	class=" r-ori-vert"
+	
+				data-fullwidth
+		
+			data-cellId="section2_c1" data-pageid="{$pageid}"
+		data-v-cell="4"
+		
+>
+	<div edit-form-cell class="clearfix">
+				
+{BEGIN estado_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_estado}  r-vertical-field" 
+	data-fieldname="estado" 
+	data-signal-error-for="estado{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field11" {$item_integrated_edit_field11} data-pageid="{$pageid}" data-field="estado" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_estado}">
+		{BEGIN estado_label}{$label pagos estado }{END estado_label}
+	</label>
+	<div class="r-edit-field">
+		{$estado_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="estado">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END estado_fieldblock}
+											
+{BEGIN fecha_pago_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_fecha_pago}  r-vertical-field" 
+	data-fieldname="fecha_pago" 
+	data-signal-error-for="fecha_pago{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field8" {$item_integrated_edit_field8} data-pageid="{$pageid}" data-field="fecha_pago" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_fecha_pago}">
+		{BEGIN fecha_pago_label}{$label pagos fecha_pago }{END fecha_pago_label}
+	</label>
+	<div class="r-edit-field">
+		{$fecha_pago_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="fecha_pago">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END fecha_pago_fieldblock}
+											
+{BEGIN metodo_pago_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_metodo_pago}  r-vertical-field" 
+	data-fieldname="metodo_pago" 
+	data-signal-error-for="metodo_pago{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field9" {$item_integrated_edit_field9} data-pageid="{$pageid}" data-field="metodo_pago" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_metodo_pago}">
+		{BEGIN metodo_pago_label}{$label pagos metodo_pago }{END metodo_pago_label}
+	</label>
+	<div class="r-edit-field">
+		{$metodo_pago_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="metodo_pago">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END metodo_pago_fieldblock}
+											
+{BEGIN nro_comprobante_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_nro_comprobante}  r-vertical-field" 
+	data-fieldname="nro_comprobante" 
+	data-signal-error-for="nro_comprobante{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field10" {$item_integrated_edit_field10} data-pageid="{$pageid}" data-field="nro_comprobante" >
+
+
+	<label class="r-edit-label control-label" for="{$labelfor_nro_comprobante}">
+		{BEGIN nro_comprobante_label}{$label pagos nro_comprobante }{END nro_comprobante_label}
+	</label>
+	<div class="r-edit-field">
+		{$nro_comprobante_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="nro_comprobante">
+		<div class="text-muted" >
+				</div>
+	</div>
+</div>
+
+
+{END nro_comprobante_fieldblock}
+	
+								</td>
+			{END cellblock_section2_c1}
+								</tr>
+			</tbody></table>
+{END section2_block}
+						</div>
+				</div>
+	</div>
+</div>  	
+				{END grid_block}
+									{BEGIN below-grid_block}
+<div class="r-form" data-location="below-grid" id="form_below-grid_{$pageid}" data-makeup="small" {$form_below-grid} data-pageid="{$pageid}"
+		data-v-width="2"
+	data-v-margin="0"
+	
+>		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="below-grid_c1" data-pageid="{$pageid}"	{$cell_below-grid_c1}
+	class="			col-md-12
+	">
+	 
+		<span data-itemtype="add_save" data-itemid="add_save" {$item_add_save} data-pageid="{$pageid}" data-button-item>
+	<a type="button" class="btn btn-primary   
+	" {$savebutton_attrs} >
+							Guardar			</a>
+</span>
+	 
+		{BEGIN back_button}
+<span data-itemtype="add_back_list" data-itemid="add_back_list" {$item_add_back_list} data-pageid="{$pageid}" data-button-item>
+	<a type="button" class="btn btn-default   
+	" id="backButton{$id}" >
+							Volver a la lista			</a>
+</span>
+{END back_button}
+	 
+		{BEGIN cancel_button}
+<span data-itemtype="add_cancel" data-itemid="add_cancel" {$item_add_cancel} data-pageid="{$pageid}" data-button-item>
+	<a type="button" class="btn btn-default   
+	" id="cancelButton{$id}" >
+							Cancelar			</a>
+</span>
+{END cancel_button}
+	</div>					</div>
+	</div>		
+{END below-grid_block}
+			</div>
+		{$footer}
+	{END body}
+	</body>
+</html>
